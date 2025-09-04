@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Budbee Logistiikan Kannattavuusanalyysi</title>
+    <title>Budbee-reittien kannattavuusanalyysi</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
@@ -151,7 +151,6 @@
             };
 
             // Pakettiautomaattikohtaiset tiedot
-            // Muuttujien arvot annetusta mallista
             const incomePerPackage = 3.57; // €
             const packagesPerLocker = 11.26; // kpl / päivä
             const variableCostPerPackage = 1.93; // €
@@ -164,43 +163,34 @@
                 'pullis': { hourly: 32.33, fuelConsumption: 13 },
                 'pakettiauto': { hourly: 28.34, fuelConsumption: 8 }
             };
+            
+            // Simuloitu Google Maps API -vastaus
+            const routeData = {
+                'Vaasa-Kokkola': { distance: 122, duration: 90 }, // km, minuuttia
+                'Oulu-Kokkola': { distance: 198, duration: 150 },
+                'Tampere-Kokkola': { distance: 304, duration: 210 },
+                'Jyväskylä-Kokkola': { distance: 240, duration: 180 },
+                'Vantaa-Kokkola': { distance: 480, duration: 330 },
+                'Turku-Kokkola': { distance: 420, duration: 300 },
+                'Pori-Kokkola': { distance: 290, duration: 200 },
+                'Kuopio-Kokkola': { distance: 310, duration: 220 },
+                'Joensuu-Kokkola': { distance: 410, duration: 280 },
+                'Lappeenranta-Kokkola': { distance: 470, duration: 320 }
+            };
 
-            // Haetaan Google Maps API:n avulla etäisyys ja kesto
+            // Hakee etäisyyden ja keston Google Mapsin Directions API:sta (simuloitu)
             async function getRouteData(origin, destination) {
-                // Hakee etäisyyden ja keston Google Mapsin Directions API:sta.
-                // Koska emme voi käyttää ulkoisia API-avainten takia, simuloimme hakua ja matkaa
-                // Koska olemme rajoitetussa ympäristössä, emme voi tehdä aitoja Google Maps API-kutsuja.
-                // Käytämme tässä esimerkkinä suoraviivaista laskentaa kahden pisteen välille.
-                // Oikeassa sovelluksessa tehtäisiin API-kutsu.
-
-                // Simuloitu Google Maps API -vastaus
-                const routeData = await new Promise(resolve => setTimeout(() => {
-                    // Esimerkkidataa, oikea API-kutsu antaisi tarkemmat tiedot
-                    const distances = {
-                        'Vaasa-Kokkola': { distance: 122, duration: 90 }, // km, minuuttia
-                        'Oulu-Kokkola': { distance: 198, duration: 150 },
-                        'Tampere-Kokkola': { distance: 304, duration: 210 },
-                        'Jyväskylä-Kokkola': { distance: 240, duration: 180 },
-                        'Vantaa-Kokkola': { distance: 480, duration: 330 },
-                        'Turku-Kokkola': { distance: 420, duration: 300 },
-                        'Pori-Kokkola': { distance: 290, duration: 200 },
-                        'Kuopio-Kokkola': { distance: 310, duration: 220 },
-                        'Joensuu-Kokkola': { distance: 410, duration: 280 },
-                        'Lappeenranta-Kokkola': { distance: 470, duration: 320 }
-                    };
-
-                    const key = `${origin}-${destination}`;
-                    if (distances[key]) {
+                const key = `${origin}-${destination}`;
+                return new Promise(resolve => setTimeout(() => {
+                    if (routeData[key]) {
                         resolve({
-                            distance: distances[key].distance,
-                            duration: distances[key].duration
+                            distance: routeData[key].distance,
+                            duration: routeData[key].duration
                         });
                     } else {
-                        resolve(null); // Palauttaa null, jos reittiä ei löydy
+                        resolve(null);
                     }
                 }, 1000));
-
-                return routeData;
             }
 
             // Etäisyyden laskenta kahden pisteen (lat, lon) välillä
@@ -218,7 +208,6 @@
             // Hakee kohdekaupungin koordinaatit Google Geocoding API:lla (simuloitu)
             async function getCityCoordinates(cityName) {
                 // Simuloimme tässä koordinaattihakua, koska oikea API-kutsu vaatisi API-avaimen.
-                // Oikeassa sovelluksessa käytettäisiin Google Geocoding API:a.
                 const cityCoordinates = {
                     'Kokkola': { lat: 63.8385, lon: 23.1309 },
                     'Helsinki': { lat: 60.1695, lon: 24.9354 },
@@ -234,8 +223,9 @@
                     'Joensuu': { lat: 62.6006, lon: 29.7634 },
                 };
                 return new Promise(resolve => setTimeout(() => {
-                    if (cityCoordinates[cityName]) {
-                        resolve(cityCoordinates[cityName]);
+                    const normalizedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
+                    if (cityCoordinates[normalizedCityName]) {
+                        resolve(cityCoordinates[normalizedCityName]);
                     } else {
                         resolve(null);
                     }
@@ -255,16 +245,13 @@
                 errorDiv.style.display = 'none';
 
                 try {
-                    // Hakee kohdekaupungin koordinaatit
                     const destinationCoords = await getCityCoordinates(destinationName);
                     if (!destinationCoords) {
                         throw new Error(`Paikkakuntaa "${destinationName}" ei löydy. Tarkista kirjoitusasu.`);
                     }
 
-                    // Etsii lähimmän terminaalin
                     let closestTerminalName = null;
                     let shortestDistance = Infinity;
-                    let terminalCoords = null;
 
                     for (const terminalName in terminals) {
                         const dist = haversineDistance(
@@ -276,19 +263,16 @@
                         if (dist < shortestDistance) {
                             shortestDistance = dist;
                             closestTerminalName = terminalName;
-                            terminalCoords = terminals[terminalName];
                         }
                     }
 
-                    // Lasketaan todelliset ajo- ja matkakulut käyttäen simuloidusti reittidataa
                     const routeData = await getRouteData(closestTerminalName, destinationName);
                     const routeDistance = routeData ? routeData.distance : shortestDistance;
-                    const routeDuration = routeData ? routeData.duration : (shortestDistance / 80) * 60; // arvio 80 km/h keskinopeudella
+                    const routeDuration = routeData ? routeData.duration : (shortestDistance / 80) * 60;
                     
                     const vehicleType = terminals[closestTerminalName].vehicle;
                     const vehicle = vehicleCosts[vehicleType];
 
-                    // Reitin kiinteä päiväkustannus (meno-paluu)
                     const totalDistance = routeDistance * 2;
                     const totalDurationHours = (routeDuration * 2) / 60;
                     
@@ -296,21 +280,22 @@
                     const wageCost = totalDurationHours * vehicle.hourly;
                     const fixedDailyCost = fuelCost + wageCost;
 
-                    // Pakettiautomaattikohtainen nettotuotto
                     const hourlyRate = vehicle.hourly / 60;
                     const dailyIncome = packagesPerLocker * incomePerPackage;
                     const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;
                     const stopWageCost = stopDuration * hourlyRate;
                     const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCost;
 
-                    // Kannattavuuspiste
+                    if (netProfitPerLocker <= 0) {
+                        throw new Error("Negatiivinen nettotuotto, reitti ei ole kannattava millään automaattimäärällä.");
+                    }
+
                     const breakEvenPoint = fixedDailyCost / netProfitPerLocker;
                     const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);
 
-                    // Päivitä UI tuloksilla
                     closestTerminalSpan.textContent = closestTerminalName;
                     routeDistanceSpan.textContent = `${totalDistance.toFixed(2)} km`;
-                    routeTimeSpan.textContent = `${(totalDurationHours).toFixed(2)} tuntia (${(routeDuration*2)} minuuttia)`;
+                    routeTimeSpan.textContent = `${totalDurationHours.toFixed(2)} tuntia (${(routeDuration*2).toFixed(0)} minuuttia)`;
                     fixedCostSpan.textContent = `${fixedDailyCost.toFixed(2)} €`;
                     netProfitPerLockerSpan.textContent = `${netProfitPerLocker.toFixed(2)} € / päivä`;
                     breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} automaattia`;
