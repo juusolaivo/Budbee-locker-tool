@@ -176,7 +176,7 @@
             
             // Simuloitu Google Maps API -vastaus
             const routeData = {
-                'Vaasa-Kokkola': { distance: 122, duration: 90 }, // km, minuuttia
+                'Vaasa-Kokkola': { distance: 122, duration: 90 },
                 'Oulu-Kokkola': { distance: 198, duration: 150 },
                 'Tampere-Kokkola': { distance: 304, duration: 210 },
                 'Jyväskylä-Kokkola': { distance: 240, duration: 180 },
@@ -185,17 +185,35 @@
                 'Pori-Kokkola': { distance: 290, duration: 200 },
                 'Kuopio-Kokkola': { distance: 310, duration: 220 },
                 'Joensuu-Kokkola': { distance: 410, duration: 280 },
-                'Lappeenranta-Kokkola': { distance: 470, duration: 320 }
+                'Lappeenranta-Kokkola': { distance: 470, duration: 320 },
+                // Uusia reittitietoja lisätty kattavampaa analyysiä varten
+                'Vantaa-Hämeenlinna': { distance: 98, duration: 75 },
+                'Tampere-Hämeenlinna': { distance: 75, duration: 60 },
+                'Kuopio-Rovaniemi': { distance: 580, duration: 420 },
+                'Oulu-Rovaniemi': { distance: 220, duration: 165 },
+                'Turku-Salo': { distance: 52, duration: 40 },
+                'Vantaa-Salo': { distance: 120, duration: 85 },
+                'Pori-Rauma': { distance: 50, duration: 40 },
+                'Turku-Rauma': { distance: 90, duration: 65 },
+                'Jyväskylä-Savonlinna': { distance: 190, duration: 150 },
+                'Lappeenranta-Savonlinna': { distance: 140, duration: 120 },
+                'Vaasa-Seinäjoki': { distance: 78, duration: 60 },
             };
 
             // Hakee etäisyyden ja keston Google Mapsin Directions API:sta (simuloitu)
             async function getRouteData(origin, destination) {
                 const key = `${origin}-${destination}`;
+                const reverseKey = `${destination}-${origin}`;
                 return new Promise(resolve => setTimeout(() => {
                     if (routeData[key]) {
                         resolve({
                             distance: routeData[key].distance,
                             duration: routeData[key].duration
+                        });
+                    } else if (routeData[reverseKey]) {
+                        resolve({
+                            distance: routeData[reverseKey].distance,
+                            duration: routeData[reverseKey].duration
                         });
                     } else {
                         resolve(null);
@@ -231,6 +249,14 @@
                     'Vaasa': { lat: 63.0954, lon: 21.6163 },
                     'Lappeenranta': { lat: 61.0594, lon: 28.1873 },
                     'Joensuu': { lat: 62.6006, lon: 29.7634 },
+                    'Espoo': { lat: 60.2055, lon: 24.6559 },
+                    'Vantaa': { lat: 60.2931, lon: 25.0401 },
+                    'Rovaniemi': { lat: 66.5039, lon: 25.7294 },
+                    'Savonlinna': { lat: 61.8687, lon: 28.8778 },
+                    'Hämeenlinna': { lat: 60.9942, lon: 24.4646 },
+                    'Salo': { lat: 60.3789, lon: 23.1344 },
+                    'Rauma': { lat: 61.1293, lon: 21.5170 },
+                    'Seinäjoki': { lat: 62.7931, lon: 22.8407 },
                 };
                 return new Promise(resolve => setTimeout(() => {
                     const normalizedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
@@ -276,9 +302,9 @@
                         }
                     }
 
-                    const routeData = await getRouteData(closestTerminalName, destinationName);
-                    const routeDistance = routeData ? routeData.distance : shortestDistance;
-                    const routeDuration = routeData ? routeData.duration : (shortestDistance / 80) * 60;
+                    const routeDataResult = await getRouteData(closestTerminalName, destinationName);
+                    const routeDistance = routeDataResult ? routeDataResult.distance : shortestDistance;
+                    const routeDuration = routeDataResult ? routeDataResult.duration : (shortestDistance / 80) * 60;
                     
                     const vehicleType = terminals[closestTerminalName].vehicle;
                     const vehicle = vehicleCosts[vehicleType];
