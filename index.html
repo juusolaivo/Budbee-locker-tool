@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="fi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budbee Logistiikan Kannattavuusanalyysi</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .container {
+            max-width: 800px;
+        }
+        .bg-budbee-purple {
+            background-color: #5d2595;
+        }
+        .text-budbee-green {
+            color: #5bb37d;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #5d2595;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4">
+    <div class="container bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+        <header class="text-center mb-6">
+            <h1 class="text-4xl font-bold text-budbee-purple mb-2">Logistiikan Kannattavuusanalyysi</h1>
+            <p class="text-lg text-gray-600">Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.</p>
+        </header>
+
+        <!-- Input Section -->
+        <div class="mb-6 space-y-4">
+            <div>
+                <label for="destinationInput" class="block text-gray-700 font-semibold mb-2">Syötä kohdekaupunki:</label>
+                <input type="text" id="destinationInput" placeholder="Esim. Kokkola" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
+            </div>
+            <button id="analyzeButton" class="w-full bg-budbee-green text-white font-bold py-3 px-4 rounded-lg hover:bg-budbee-purple transition duration-300 ease-in-out transform hover:scale-105">
+                Analysoi
+            </button>
+        </div>
+
+        <!-- Result Section -->
+        <div id="results" class="bg-gray-100 p-6 rounded-lg border border-gray-200" style="display: none;">
+            <div id="loading" class="flex justify-center items-center py-8" style="display: none;">
+                <div class="loader"></div>
+            </div>
+            <div id="resultContent" class="space-y-4" style="display: none;">
+                <h2 class="text-2xl font-bold text-budbee-purple">Analyysin tulokset</h2>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Lähin terminaali:</p>
+                    <p id="closestTerminal" class="text-lg font-semibold text-budbee-green"></p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Matka (meno-paluu):</p>
+                    <p id="routeDistance" class="text-lg font-semibold text-budbee-green"></p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Matkaan kuluva aika (meno-paluu):</p>
+                    <p id="routeTime" class="text-lg font-semibold text-budbee-green"></p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Reitin kiinteä päiväkustannus:</p>
+                    <p id="fixedCost" class="text-lg font-semibold text-budbee-green"></p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Automaattikohtainen nettotuotto päivässä:</p>
+                    <p id="netProfitPerLocker" class="text-lg font-semibold text-budbee-green"></p>
+                </div>
+                <div class="bg-white p-4 rounded-lg shadow-sm">
+                    <p class="text-sm text-gray-500">Kannattavuuspiste:</p>
+                    <p id="breakEvenPoint" class="text-2xl font-bold text-budbee-purple"></p>
+                    <p id="breakEvenDetails" class="text-sm text-gray-500"></p>
+                </div>
+            </div>
+            <div id="error" class="bg-red-100 text-red-700 p-4 rounded-lg border border-red-300" style="display: none;">
+                <p id="errorMessage"></p>
+            </div>
+        </div>
+
+        <!-- Custom Modal for Alerts -->
+        <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4" style="display: none;">
+            <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center border-t-4 border-budbee-green">
+                <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-2"></h3>
+                <p id="modalMessage" class="text-sm text-gray-600 mb-4"></p>
+                <button id="modalCloseButton" class="bg-budbee-green text-white px-6 py-2 rounded-lg hover:bg-budbee-purple transition">Sulje</button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const destinationInput = document.getElementById('destinationInput');
+            const analyzeButton = document.getElementById('analyzeButton');
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            const resultContentDiv = document.getElementById('resultContent');
+            const errorDiv = document.getElementById('error');
+            const errorMessageSpan = document.getElementById('errorMessage');
+
+            const closestTerminalSpan = document.getElementById('closestTerminal');
+            const routeDistanceSpan = document.getElementById('routeDistance');
+            const routeTimeSpan = document.getElementById('routeTime');
+            const fixedCostSpan = document.getElementById('fixedCost');
+            const netProfitPerLockerSpan = document.getElementById('netProfitPerLocker');
+            const breakEvenPointSpan = document.getElementById('breakEvenPoint');
+            const breakEvenDetailsSpan = document.getElementById('breakEvenDetails');
+
+            const modal = document.getElementById('modal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalMessage = document.getElementById('modalMessage');
+            const modalCloseButton = document.getElementById('modalCloseButton');
+
+            // Show custom modal instead of alert
+            function showModal(title, message) {
+                modalTitle.textContent = title;
+                modalMessage.textContent = message;
+                modal.style.display = 'flex';
+            }
+
+            modalCloseButton.addEventListener('click', () => {
+                modal.style.display = 'none';
+            });
+
+            // Terminallien sijainnit (lat, lon) ja osoitteet
+            const terminals = {
+                'Vantaa': { lat: 60.290314, lon: 24.96513, address: 'Tammiston Kauppatie 11 B, 01510 Vantaa', vehicle: 'pullis' },
+                'Jyväskylä': { lat: 62.242637, lon: 25.747355, address: 'Kuormaajantie 6 / Suluntie, 40320 Jyväskylä', vehicle: 'pakettiauto' },
+                'Kuopio': { lat: 62.905646, lon: 27.683674, address: 'Kisällinkatu 5, 70780 Kuopio', vehicle: 'pakettiauto' },
+                'Lahti': { lat: 60.98595, lon: 25.64253, address: 'Vuoripojankatu 16, 15210 Lahti', vehicle: 'pakettiauto' },
+                'Oulu': { lat: 65.01168, lon: 25.47167, address: 'Graniittitie 6, 90550 Oulu', vehicle: 'pakettiauto' },
+                'Tampere': { lat: 61.4981, lon: 23.7606, address: 'Kytömaankatu 11, Tampere 33720', vehicle: 'pakettiauto' },
+                'Turku': { lat: 60.4518, lon: 22.2666, address: 'Länsi-Avantintie 8, 21420 Turku', vehicle: 'pakettiauto' },
+                'Joensuu': { lat: 62.6006, lon: 29.7634, address: 'Wahlforssinkatu 9 A, 80100 Joensuu', vehicle: 'pakettiauto' },
+                'Vaasa': { lat: 63.0954, lon: 21.6163, address: 'Konttoritie 12, 65610 Vaasa', vehicle: 'pakettiauto' },
+                'Pori': { lat: 61.4862, lon: 21.795, address: 'Karjalankatu 11, 28130 Pori', vehicle: 'pakettiauto' },
+                'Lappeenranta': { lat: 61.0594, lon: 28.1873, address: 'Ratakatu 41, 53100 Lappeenranta', vehicle: 'pakettiauto' }
+            };
+
+            // Pakettiautomaattikohtaiset tiedot
+            // Muuttujien arvot annetusta mallista
+            const incomePerPackage = 3.57; // €
+            const packagesPerLocker = 11.26; // kpl / päivä
+            const variableCostPerPackage = 1.93; // €
+            const dailyLockerRent = 5.24; // €
+            const stopDuration = 6.49; // minuuttia
+
+            // Polttoainehinnat ja ajoneuvokustannukset
+            const fuelPrice = 1.85; // €/l
+            const vehicleCosts = {
+                'pullis': { hourly: 32.33, fuelConsumption: 13 },
+                'pakettiauto': { hourly: 28.34, fuelConsumption: 8 }
+            };
+
+            // Haetaan Google Maps API:n avulla etäisyys ja kesto
+            async function getRouteData(origin, destination) {
+                // Hakee etäisyyden ja keston Google Mapsin Directions API:sta.
+                // Koska emme voi käyttää ulkoisia API-avainten takia, simuloimme hakua ja matkaa
+                // Koska olemme rajoitetussa ympäristössä, emme voi tehdä aitoja Google Maps API-kutsuja.
+                // Käytämme tässä esimerkkinä suoraviivaista laskentaa kahden pisteen välille.
+                // Oikeassa sovelluksessa tehtäisiin API-kutsu.
+
+                // Simuloitu Google Maps API -vastaus
+                const routeData = await new Promise(resolve => setTimeout(() => {
+                    // Esimerkkidataa, oikea API-kutsu antaisi tarkemmat tiedot
+                    const distances = {
+                        'Vaasa-Kokkola': { distance: 122, duration: 90 }, // km, minuuttia
+                        'Oulu-Kokkola': { distance: 198, duration: 150 },
+                        'Tampere-Kokkola': { distance: 304, duration: 210 },
+                        'Jyväskylä-Kokkola': { distance: 240, duration: 180 },
+                        'Vantaa-Kokkola': { distance: 480, duration: 330 },
+                        'Turku-Kokkola': { distance: 420, duration: 300 },
+                        'Pori-Kokkola': { distance: 290, duration: 200 },
+                        'Kuopio-Kokkola': { distance: 310, duration: 220 },
+                        'Joensuu-Kokkola': { distance: 410, duration: 280 },
+                        'Lappeenranta-Kokkola': { distance: 470, duration: 320 }
+                    };
+
+                    const key = `${origin}-${destination}`;
+                    if (distances[key]) {
+                        resolve({
+                            distance: distances[key].distance,
+                            duration: distances[key].duration
+                        });
+                    } else {
+                        resolve(null); // Palauttaa null, jos reittiä ei löydy
+                    }
+                }, 1000));
+
+                return routeData;
+            }
+
+            // Etäisyyden laskenta kahden pisteen (lat, lon) välillä
+            function haversineDistance(lat1, lon1, lat2, lon2) {
+                const R = 6371; // Maapallon säde kilometreissä
+                const dLat = (lat2 - lat1) * Math.PI / 180;
+                const dLon = (lon2 - lon1) * Math.PI / 180;
+                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                          Math.sin(dLon / 2) * Math.sin(dLon / 2);
+                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+                return R * c; // Etäisyys km
+            }
+
+            // Hakee kohdekaupungin koordinaatit Google Geocoding API:lla (simuloitu)
+            async function getCityCoordinates(cityName) {
+                // Simuloimme tässä koordinaattihakua, koska oikea API-kutsu vaatisi API-avaimen.
+                // Oikeassa sovelluksessa käytettäisiin Google Geocoding API:a.
+                const cityCoordinates = {
+                    'Kokkola': { lat: 63.8385, lon: 23.1309 },
+                    'Helsinki': { lat: 60.1695, lon: 24.9354 },
+                    'Tampere': { lat: 61.4991, lon: 23.7871 },
+                    'Oulu': { lat: 65.0123, lon: 25.4682 },
+                    'Turku': { lat: 60.4518, lon: 22.2666 },
+                    'Jyväskylä': { lat: 62.2426, lon: 25.7473 },
+                    'Kuopio': { lat: 62.8924, lon: 27.6775 },
+                    'Lahti': { lat: 60.9858, lon: 25.6559 },
+                    'Pori': { lat: 61.4862, lon: 21.7950 },
+                    'Vaasa': { lat: 63.0954, lon: 21.6163 },
+                    'Lappeenranta': { lat: 61.0594, lon: 28.1873 },
+                    'Joensuu': { lat: 62.6006, lon: 29.7634 },
+                };
+                return new Promise(resolve => setTimeout(() => {
+                    if (cityCoordinates[cityName]) {
+                        resolve(cityCoordinates[cityName]);
+                    } else {
+                        resolve(null);
+                    }
+                }, 500));
+            }
+
+            analyzeButton.addEventListener('click', async () => {
+                const destinationName = destinationInput.value.trim();
+                if (!destinationName) {
+                    showModal('Virhe', 'Syötä paikkakunnan nimi jatkaaksesi.');
+                    return;
+                }
+
+                resultsDiv.style.display = 'block';
+                loadingDiv.style.display = 'flex';
+                resultContentDiv.style.display = 'none';
+                errorDiv.style.display = 'none';
+
+                try {
+                    // Hakee kohdekaupungin koordinaatit
+                    const destinationCoords = await getCityCoordinates(destinationName);
+                    if (!destinationCoords) {
+                        throw new Error(`Paikkakuntaa "${destinationName}" ei löydy. Tarkista kirjoitusasu.`);
+                    }
+
+                    // Etsii lähimmän terminaalin
+                    let closestTerminalName = null;
+                    let shortestDistance = Infinity;
+                    let terminalCoords = null;
+
+                    for (const terminalName in terminals) {
+                        const dist = haversineDistance(
+                            terminals[terminalName].lat,
+                            terminals[terminalName].lon,
+                            destinationCoords.lat,
+                            destinationCoords.lon
+                        );
+                        if (dist < shortestDistance) {
+                            shortestDistance = dist;
+                            closestTerminalName = terminalName;
+                            terminalCoords = terminals[terminalName];
+                        }
+                    }
+
+                    // Lasketaan todelliset ajo- ja matkakulut käyttäen simuloidusti reittidataa
+                    const routeData = await getRouteData(closestTerminalName, destinationName);
+                    const routeDistance = routeData ? routeData.distance : shortestDistance;
+                    const routeDuration = routeData ? routeData.duration : (shortestDistance / 80) * 60; // arvio 80 km/h keskinopeudella
+                    
+                    const vehicleType = terminals[closestTerminalName].vehicle;
+                    const vehicle = vehicleCosts[vehicleType];
+
+                    // Reitin kiinteä päiväkustannus (meno-paluu)
+                    const totalDistance = routeDistance * 2;
+                    const totalDurationHours = (routeDuration * 2) / 60;
+                    
+                    const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;
+                    const wageCost = totalDurationHours * vehicle.hourly;
+                    const fixedDailyCost = fuelCost + wageCost;
+
+                    // Pakettiautomaattikohtainen nettotuotto
+                    const hourlyRate = vehicle.hourly / 60;
+                    const dailyIncome = packagesPerLocker * incomePerPackage;
+                    const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;
+                    const stopWageCost = stopDuration * hourlyRate;
+                    const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCost;
+
+                    // Kannattavuuspiste
+                    const breakEvenPoint = fixedDailyCost / netProfitPerLocker;
+                    const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);
+
+                    // Päivitä UI tuloksilla
+                    closestTerminalSpan.textContent = closestTerminalName;
+                    routeDistanceSpan.textContent = `${totalDistance.toFixed(2)} km`;
+                    routeTimeSpan.textContent = `${(totalDurationHours).toFixed(2)} tuntia (${(routeDuration*2)} minuuttia)`;
+                    fixedCostSpan.textContent = `${fixedDailyCost.toFixed(2)} €`;
+                    netProfitPerLockerSpan.textContent = `${netProfitPerLocker.toFixed(2)} € / päivä`;
+                    breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} automaattia`;
+                    breakEvenDetailsSpan.textContent = `(Tarkka luku oli ${breakEvenPoint.toFixed(2)})`;
+                    
+                    loadingDiv.style.display = 'none';
+                    resultContentDiv.style.display = 'block';
+
+                } catch (error) {
+                    loadingDiv.style.display = 'none';
+                    errorDiv.style.display = 'block';
+                    errorMessageSpan.textContent = error.message;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
