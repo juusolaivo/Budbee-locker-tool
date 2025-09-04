@@ -32,6 +32,16 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        /* Custom Budbee-specific styling for the button */
+        #analyzeButton {
+            background-color: #5bb37d;
+            color: white;
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+        }
+        #analyzeButton:hover {
+            background-color: #4b8f67;
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
@@ -47,7 +57,7 @@
                 <label for="destinationInput" class="block text-gray-700 font-semibold mb-2">Syötä kohdekaupunki:</label>
                 <input type="text" id="destinationInput" placeholder="Esim. Kokkola" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
             </div>
-            <button id="analyzeButton" class="w-full bg-budbee-green text-white font-bold py-3 px-4 rounded-lg hover:bg-budbee-purple transition duration-300 ease-in-out transform hover:scale-105">
+            <button id="analyzeButton" class="w-full font-bold py-3 px-4 rounded-lg">
                 Analysoi
             </button>
         </div>
