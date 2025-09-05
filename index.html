@@ -32,7 +32,7 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        #analyzeButton, #detailsButton, .link-button, #saveUserVariableCost {
+        #analyzeButton, #detailsButton, .link-button {
             background-color: #5bb37d;
             color: white;
             transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
@@ -42,31 +42,48 @@
             border-radius: 8px;
             font-weight: bold;
         }
-        #analyzeButton:hover, #detailsButton:hover, .link-button:hover, #saveUserVariableCost:hover {
+        #analyzeButton:hover, #detailsButton:hover, .link-button:hover {
             background-color: #4b8f67;
             transform: scale(1.05);
+        }
+        .language-toggle {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            z-index: 100;
+        }
+        .language-toggle img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
         }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-4">
+    <div class="language-toggle">
+        <img id="langToggle" src="https://flagcdn.com/gb.svg" alt="Switch to English">
+    </div>
     <div class="container bg-white p-8 rounded-xl shadow-lg border border-gray-200">
         <header class="text-center mb-6">
-            <h1 class="text-4xl font-bold text-budbee-purple mb-2">Logistiikan Kannattavuusanalyysi</h1>
-            <p class="text-lg text-gray-600">Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.</p>
+            <h1 id="mainHeading" class="text-4xl font-bold text-budbee-purple mb-2">Logistiikan Kannattavuusanalyysi</h1>
+            <p id="subHeading" class="text-lg text-gray-600">Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.</p>
         </header>
 
         <!-- Input Section -->
         <div class="mb-6 space-y-4">
             <div>
-                <label for="destinationInput" class="block text-gray-700 font-semibold mb-2">Syötä kohdekaupunki:</label>
+                <label for="destinationInput" id="destinationLabel" class="block text-gray-700 font-semibold mb-2">Syötä kohdekaupunki:</label>
                 <input type="text" id="destinationInput" placeholder="Esim. Kokkola" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
             </div>
             <div>
-                <label for="ppldInput" class="block text-gray-700 font-semibold mb-2">PPLD:</label>
+                <label for="ppldInput" id="ppldLabel" class="block text-gray-700 font-semibold mb-2">PPLD:</label>
                 <input type="number" id="ppldInput" value="10" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
             </div>
             <div>
-                <label for="variableCostInput" class="block text-gray-700 font-semibold mb-2">Muuttuva kulu per paketti (€):</label>
+                <label for="variableCostInput" id="variableCostLabel" class="block text-gray-700 font-semibold mb-2">Muuttuva kulu per paketti (€):</label>
                 <input type="number" id="variableCostInput" value="1.93" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
             </div>
             <button id="analyzeButton" class="w-full font-bold py-3 px-4 rounded-lg">
@@ -80,61 +97,61 @@
                 <div class="loader"></div>
             </div>
             <div id="resultContent" class="space-y-4" style="display: none;">
-                <h2 class="text-2xl font-bold text-budbee-purple">Analyysin tulokset</h2>
+                <h2 id="resultsHeading" class="text-2xl font-bold text-budbee-purple">Analyysin tulokset</h2>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Lähin terminaali:</p>
+                    <p id="closestTerminalLabel" class="text-sm text-gray-500">Lähin terminaali:</p>
                     <p id="closestTerminal" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 
                 <!-- Manual Route Data Input -->
                 <div class="bg-white p-4 rounded-lg shadow-sm space-y-2">
-                    <h3 class="font-semibold text-gray-700">Muokkaa reitin tietoja:</h3>
+                    <h3 id="manualHeading" class="font-semibold text-gray-700">Muokkaa reitin tietoja:</h3>
                     <div>
-                        <label for="manualDistanceInput" class="block text-sm text-gray-500 mb-1">Matka (km) yhteensä:</label>
+                        <label for="manualDistanceInput" id="manualDistanceLabel" class="block text-sm text-gray-500 mb-1">Matka (km) yhteensä:</label>
                         <input type="number" id="manualDistanceInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                     </div>
                     <div>
-                        <label for="manualHoursInput" class="block text-sm text-gray-500 mb-1">Aika (tuntia) yhteensä:</label>
+                        <label for="manualHoursInput" id="manualHoursLabel" class="block text-sm text-gray-500 mb-1">Aika (tuntia) yhteensä:</label>
                         <input type="number" id="manualHoursInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                     </div>
                     <div>
-                        <label for="manualMinutesInput" class="block text-sm text-gray-500 mb-1">Aika (minuuttia) yhteensä:</label>
+                        <label for="manualMinutesInput" id="manualMinutesLabel" class="block text-sm text-gray-500 mb-1">Aika (minuuttia) yhteensä:</label>
                         <input type="number" id="manualMinutesInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
                     </div>
                 </div>
 
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Matka:</p>
+                    <p id="routeDistanceLabel" class="text-sm text-gray-500">Matka:</p>
                     <p id="routeDistance" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Matkaan kuluva aika:</p>
+                    <p id="routeTimeLabel" class="text-sm text-gray-500">Matkaan kuluva aika:</p>
                     <p id="routeTime" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Pysähdysten kesto:</p>
+                    <p id="totalStopDurationLabel" class="text-sm text-gray-500">Pysähdysten kesto:</p>
                     <p id="totalStopDuration" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Reitin kokonaiskesto:</p>
+                    <p id="totalRouteDurationLabel" class="text-sm text-gray-500">Reitin kokonaiskesto:</p>
                     <p id="totalRouteDuration" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Reitin kiinteä päiväkustannus:</p>
+                    <p id="fixedCostLabel" class="text-sm text-gray-500">Reitin kiinteä päiväkustannus:</p>
                     <p id="fixedCost" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Automaattikohtainen nettotuotto päivässä:</p>
+                    <p id="netProfitPerLockerLabel" class="text-sm text-gray-500">Automaattikohtainen nettotuotto päivässä:</p>
                     <p id="netProfitPerLocker" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Kannattavuuspiste:</p>
+                    <p id="breakEvenPointLabel" class="text-sm text-gray-500">Kannattavuuspiste:</p>
                     <p id="breakEvenPoint" class="text-2xl font-bold text-budbee-purple"></p>
                     <p id="breakEvenDetails" class="text-sm text-gray-500"></p>
                 </div>
                 
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <label for="manualLockerCountInput" class="block text-gray-700 font-semibold mb-2">Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):</label>
+                    <label for="manualLockerCountInput" id="manualLockerCountLabel" class="block text-gray-700 font-semibold mb-2">Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):</label>
                     <input type="number" id="manualLockerCountInput" step="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
                 </div>
                 
@@ -147,13 +164,13 @@
             </div>
             
             <div id="detailedBreakdown" class="bg-white p-6 mt-4 rounded-lg shadow-inner border border-gray-300" style="display: none;">
-                <h3 class="text-xl font-bold text-budbee-purple mb-4">Kulujen ja tuottojen tarkka erittely</h3>
+                <h3 id="detailedHeading" class="text-xl font-bold text-budbee-purple mb-4">Kulujen ja tuottojen tarkka erittely</h3>
                 <div class="space-y-3">
-                    <p class="font-semibold text-lg text-gray-700">Pakettimäärä:</p>
+                    <p id="packageCountLabel" class="font-semibold text-lg text-gray-700">Pakettimäärä:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
                         <li id="totalPackagesAtBreakeven"></li>
                     </ul>
-                    <p class="font-semibold text-lg text-gray-700">Pakettikohtainen erittely:</p>
+                    <p id="perPackageHeading" class="font-semibold text-lg text-gray-700">Pakettikohtainen erittely:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
                         <li id="perPackageIncome"></li>
                         <li id="perPackageVariableCost"></li>
@@ -161,21 +178,20 @@
                         <li id="perPackageCompensation"></li>
                         <li id="perPackageFuelCost"></li>
                     </ul>
-                    <p class="font-semibold text-lg text-gray-700">Automaattikohtaiset kulut:</p>
+                    <p id="perLockerHeading" class="font-semibold text-lg text-gray-700">Automaattikohtaiset kulut:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
                         <li id="dailyVariableCostsBreakdown"></li>
                         <li id="dailyLockerRentBreakdown"></li>
                         <li id="stopWageCostBreakdown"></li>
                     </ul>
-                    <p class="font-semibold text-lg text-gray-700">Reitin kiinteät kulut:</p>
+                    <p id="fixedCostsHeading" class="font-semibold text-lg text-gray-700">Reitin kiinteät kulut:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
                         <li id="fuelCostBreakdown"></li>
                         <li id="wageCostBreakdown"></li>
                     </ul>
-                    <p class="font-semibold text-lg text-gray-700">Nettotulos:</p>
+                    <p id="netResultHeading" class="font-semibold text-lg text-gray-700">Nettotulos:</p>
                     <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">
                         <li id="netProfitPerPackageBreakdown"></li>
-                        <li id="netProfitPerLockerBreakdown"></li>
                         <li id="totalDailyNetProfitBreakdown"></li>
                     </ul>
                 </div>
@@ -198,7 +214,171 @@
     </div>
 
     <script type="module">
-        // Poistettu Firebase-tuonnit ja kaikki niihin liittyvät muuttujat, toiminnot ja tapahtumankäsittelijät.
+        const langData = {
+            'fi': {
+                appTitle: 'Budbee-reittien kannattavuusanalyysi',
+                mainHeading: 'Logistiikan Kannattavuusanalyysi',
+                subHeading: 'Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.',
+                destinationLabel: 'Syötä kohdekaupunki:',
+                destinationPlaceholder: 'Esim. Kokkola',
+                ppldLabel: 'PPLD:',
+                variableCostLabel: 'Muuttuva kulu per paketti (€):',
+                analyzeButton: 'Analysoi',
+                resultsHeading: 'Analyysin tulokset',
+                closestTerminalLabel: 'Lähin terminaali:',
+                manualHeading: 'Muokkaa reitin tietoja:',
+                manualDistanceLabel: 'Matka (km) yhteensä:',
+                manualHoursLabel: 'Aika (tuntia) yhteensä:',
+                manualMinutesLabel: 'Aika (minuuttia) yhteensä:',
+                routeDistanceLabel: 'Matka:',
+                routeTimeLabel: 'Matkaan kuluva aika:',
+                totalStopDurationLabel: 'Pysähdysten kesto:',
+                totalRouteDurationLabel: 'Reitin kokonaiskesto:',
+                fixedCostLabel: 'Reitin kiinteä päiväkustannus:',
+                netProfitPerLockerLabel: 'Automaattikohtainen nettotuotto päivässä:',
+                breakEvenPointLabel: 'Kannattavuuspiste:',
+                manualLockerCountLabel: "Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):",
+                detailsButton: 'Tarkka erittely',
+                mapsLink: 'Avaa reitti Google Mapsissa',
+                detailedHeading: 'Kulujen ja tuottojen tarkka erittely',
+                packageCountLabel: 'Pakettimäärä:',
+                perPackageHeading: 'Pakettikohtainen erittely:',
+                perLockerHeading: 'Automaattikohtaiset kulut:',
+                fixedCostsHeading: 'Reitin kiinteät kulut:',
+                netResultHeading: 'Nettotulos:',
+                perPackageIncome: 'Tulo per paketti:',
+                perPackageVariableCost: 'Muuttuva kulu per paketti:',
+                perPackageLockerRent: 'Automaattivuokra per paketti:',
+                perPackageCompensation: 'Kompensaatio (ajo ja pysähdys) per paketti:',
+                perPackageFuelCost: 'Polttoainekustannus per paketti:',
+                dailyVariableCostsBreakdown: 'Muuttuvat kustannukset (per automaatti):',
+                dailyLockerRentBreakdown: 'Automaatin päivävuokra:',
+                stopWageCostBreakdown: 'Kompensaatio (pysähdys, per automaatti):',
+                fuelCostBreakdown: 'Polttoainekustannukset:',
+                wageCostBreakdown: 'Kompensaatio (ajo ja pysähdys):',
+                netProfitPerPackageBreakdown: 'Päivittäinen nettotulos per paketti:',
+                totalDailyNetProfitBreakdown: 'Päivittäinen kokonaisnettotulos:',
+                modalErrorTitle: 'Virhe',
+                modalErrorMessage: 'Syötä kelvollinen automaattimäärä.',
+                noRouteFound: (city) => `Paikkakuntaa "${city}" ei löydy. Tarkista kirjoitusasu.`,
+                noProfit: 'Negatiivinen nettotuotto, reitti ei ole kannattava millään automaattimäärällä.',
+                modalClose: 'Sulje'
+            },
+            'en': {
+                appTitle: 'Budbee Route Profitability Analysis',
+                mainHeading: 'Logistics Profitability Analysis',
+                subHeading: 'Calculate how many lockers are needed for a new route to be profitable.',
+                destinationLabel: 'Enter destination city:',
+                destinationPlaceholder: 'E.g. Kokkola',
+                ppldLabel: 'PPLD:',
+                variableCostLabel: 'Variable cost per package (€):',
+                analyzeButton: 'Analyze',
+                resultsHeading: 'Analysis Results',
+                closestTerminalLabel: 'Closest terminal:',
+                manualHeading: 'Edit route data:',
+                manualDistanceLabel: 'Total distance (km):',
+                manualHoursLabel: 'Total time (hours):',
+                manualMinutesLabel: 'Total time (minutes):',
+                routeDistanceLabel: 'Distance:',
+                routeTimeLabel: 'Driving time:',
+                totalStopDurationLabel: 'Stop duration:',
+                totalRouteDurationLabel: 'Total route duration:',
+                fixedCostLabel: 'Fixed daily route cost:',
+                netProfitPerLockerLabel: 'Net profit per locker per day:',
+                breakEvenPointLabel: 'Breakeven point:',
+                manualLockerCountLabel: "Edit number of lockers (press 'Detailed breakdown' again):",
+                detailsButton: 'Detailed breakdown',
+                mapsLink: 'Open route in Google Maps',
+                detailedHeading: 'Detailed breakdown of costs and revenue',
+                packageCountLabel: 'Package count:',
+                perPackageHeading: 'Per package breakdown:',
+                perLockerHeading: 'Per locker costs:',
+                fixedCostsHeading: 'Fixed route costs:',
+                netResultHeading: 'Net result:',
+                perPackageIncome: 'Revenue per package:',
+                perPackageVariableCost: 'Variable cost per package:',
+                perPackageLockerRent: 'Locker rent per package:',
+                perPackageCompensation: 'Compensation (driving and stops) per package:',
+                perPackageFuelCost: 'Fuel cost per package:',
+                dailyVariableCostsBreakdown: 'Variable costs (per locker):',
+                dailyLockerRentBreakdown: 'Daily locker rent:',
+                stopWageCostBreakdown: 'Compensation (stops, per locker):',
+                fuelCostBreakdown: 'Fuel costs:',
+                wageCostBreakdown: 'Compensation (driving and stops):',
+                netProfitPerPackageBreakdown: 'Daily net profit per package:',
+                totalDailyNetProfitBreakdown: 'Total daily net profit:',
+                modalErrorTitle: 'Error',
+                modalErrorMessage: 'Please enter a valid number of lockers.',
+                noRouteFound: (city) => `Could not find a location for "${city}". Please check spelling.`,
+                noProfit: 'Negative net profit, the route is not profitable with any number of lockers.',
+                modalClose: 'Close'
+            }
+        };
+
+        let currentLang = 'fi';
+        const langToggle = document.getElementById('langToggle');
+
+        function updateLanguage(lang) {
+            currentLang = lang;
+            const texts = langData[lang];
+
+            document.title = texts.appTitle;
+            document.getElementById('mainHeading').textContent = texts.mainHeading;
+            document.getElementById('subHeading').textContent = texts.subHeading;
+            document.getElementById('destinationLabel').textContent = texts.destinationLabel;
+            document.getElementById('destinationInput').placeholder = texts.destinationPlaceholder;
+            document.getElementById('ppldLabel').textContent = texts.ppldLabel;
+            document.getElementById('variableCostLabel').textContent = texts.variableCostLabel;
+            document.getElementById('analyzeButton').textContent = texts.analyzeButton;
+            document.getElementById('resultsHeading').textContent = texts.resultsHeading;
+            document.getElementById('closestTerminalLabel').textContent = texts.closestTerminalLabel;
+            document.getElementById('manualHeading').textContent = texts.manualHeading;
+            document.getElementById('manualDistanceLabel').textContent = texts.manualDistanceLabel;
+            document.getElementById('manualHoursLabel').textContent = texts.manualHoursLabel;
+            document.getElementById('manualMinutesLabel').textContent = texts.manualMinutesLabel;
+            document.getElementById('routeDistanceLabel').textContent = texts.routeDistanceLabel;
+            document.getElementById('routeTimeLabel').textContent = texts.routeTimeLabel;
+            document.getElementById('totalStopDurationLabel').textContent = texts.totalStopDurationLabel;
+            document.getElementById('totalRouteDurationLabel').textContent = texts.totalRouteDurationLabel;
+            document.getElementById('fixedCostLabel').textContent = texts.fixedCostLabel;
+            document.getElementById('netProfitPerLockerLabel').textContent = texts.netProfitPerLockerLabel;
+            document.getElementById('breakEvenPointLabel').textContent = texts.breakEvenPointLabel;
+            document.getElementById('manualLockerCountLabel').textContent = texts.manualLockerCountLabel;
+            document.getElementById('detailsButton').textContent = texts.detailsButton;
+            document.getElementById('mapsLink').textContent = texts.mapsLink;
+            document.getElementById('detailedHeading').textContent = texts.detailedHeading;
+            document.getElementById('packageCountLabel').textContent = texts.packageCountLabel;
+            document.getElementById('perPackageHeading').textContent = texts.perPackageHeading;
+            document.getElementById('perLockerHeading').textContent = texts.perLockerHeading;
+            document.getElementById('fixedCostsHeading').textContent = texts.fixedCostsHeading;
+            document.getElementById('netResultHeading').textContent = texts.netResultHeading;
+            document.getElementById('perPackageIncome').textContent = texts.perPackageIncome;
+            document.getElementById('perPackageVariableCost').textContent = texts.perPackageVariableCost;
+            document.getElementById('perPackageLockerRent').textContent = texts.perPackageLockerRent;
+            document.getElementById('perPackageCompensation').textContent = texts.perPackageCompensation;
+            document.getElementById('perPackageFuelCost').textContent = texts.perPackageFuelCost;
+            document.getElementById('dailyVariableCostsBreakdown').textContent = texts.dailyVariableCostsBreakdown;
+            document.getElementById('dailyLockerRentBreakdown').textContent = texts.dailyLockerRentBreakdown;
+            document.getElementById('stopWageCostBreakdown').textContent = texts.stopWageCostBreakdown;
+            document.getElementById('fuelCostBreakdown').textContent = texts.fuelCostBreakdown;
+            document.getElementById('wageCostBreakdown').textContent = texts.wageCostBreakdown;
+            document.getElementById('netProfitPerPackageBreakdown').textContent = texts.netProfitPerPackageBreakdown;
+            document.getElementById('totalDailyNetProfitBreakdown').textContent = texts.totalDailyNetProfitBreakdown;
+            document.getElementById('modalTitle').textContent = texts.modalErrorTitle;
+            document.getElementById('modalMessage').textContent = texts.modalErrorMessage;
+            document.getElementById('modalCloseButton').textContent = texts.modalClose;
+
+            langToggle.src = lang === 'fi' ? 'https://flagcdn.com/gb.svg' : 'https://flagcdn.com/fi.svg';
+            langToggle.alt = lang === 'fi' ? 'Switch to English' : 'Vaihda suomeksi';
+        }
+
+        langToggle.addEventListener('click', () => {
+            const newLang = currentLang === 'fi' ? 'en' : 'fi';
+            updateLanguage(newLang);
+            if (cachedCalculations) {
+                updateAllCalculations();
+            }
+        });
 
         const destinationInput = document.getElementById('destinationInput');
         const ppldInput = document.getElementById('ppldInput');
@@ -479,7 +659,12 @@
                 const formatTime = (totalMinutes) => {
                     const hours = Math.floor(totalMinutes / 60);
                     const minutes = Math.round(totalMinutes % 60);
-                    return `${hours} tuntia ${minutes} minuuttia`;
+                    const lang = currentLang;
+                    if (lang === 'fi') {
+                        return `${hours} tuntia ${minutes} minuuttia`;
+                    } else {
+                        return `${hours} hours ${minutes} minutes`;
+                    }
                 };
 
                 // Update main analysis results
@@ -490,8 +675,8 @@
                 totalRouteDurationSpan.textContent = formatTime(totalRouteDurationMinutes);
                 fixedCostSpan.textContent = `${newFixedDailyCost.toFixed(2)} €`;
                 netProfitPerLockerSpan.textContent = `${netProfitPerLocker.toFixed(2)} € / päivä`;
-                breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} automaattia`;
-                breakEvenDetailsSpan.textContent = `(Tarkka luku oli ${breakEvenPoint.toFixed(2)})`;
+                breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} ${currentLang === 'fi' ? 'automaattia' : 'lockers'}`;
+                breakEvenDetailsSpan.textContent = `(${currentLang === 'fi' ? 'Tarkka luku oli' : 'Exact number was'} ${breakEvenPoint.toFixed(2)})`;
 
                 // Update detailed breakdown if it's visible
                 if (detailedBreakdownDiv.style.display !== 'none') {
@@ -508,7 +693,7 @@
 
                 const manualLockerCount = parseFloat(manualLockerCountInput.value);
                 if (isNaN(manualLockerCount) || manualLockerCount <= 0) {
-                    showModal('Virhe', 'Syötä kelvollinen automaattimäärä.');
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);
                     detailedBreakdownDiv.style.display = 'none';
                     return;
                 }
@@ -526,7 +711,8 @@
                 
                 const totalPackagesAtManualCount = manualLockerCount * packagesPerLocker;
                 
-                document.getElementById('totalPackagesAtBreakeven').textContent = `Pakettimäärä: ${totalPackagesAtManualCount.toFixed(0)} kpl / päivä`;
+                const pluralPackages = totalPackagesAtManualCount === 1 ? (currentLang === 'fi' ? 'paketti' : 'package') : (currentLang === 'fi' ? 'pakettia' : 'packages');
+                document.getElementById('totalPackagesAtBreakeven').textContent = `${langData[currentLang].packageCountLabel.replace(':', '')}: ${totalPackagesAtManualCount.toFixed(0)} ${pluralPackages} / ${currentLang === 'fi' ? 'päivä' : 'day'}`;
 
                 // Pakettikohtainen erittely
                 const hourlyRate = vehicle.hourly / 60;
@@ -544,27 +730,26 @@
                 const stopWageCostPerLocker = stopDuration * hourlyRate;
                 const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCostPerLocker;
 
-                document.getElementById('perPackageIncome').textContent = `Tulo per paketti: ${incomePerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageVariableCost').textContent = `Muuttuva kulu per paketti: ${variableCostPerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageLockerRent').textContent = `Automaattivuokra per paketti: ${dailyLockerRentPerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageCompensation').textContent = `Kompensaatio (ajo ja pysähdys) per paketti: ${compensationPerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageFuelCost').textContent = `Polttoainekustannus per paketti: ${fuelPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageIncome').textContent = `${langData[currentLang].perPackageIncome} ${incomePerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageVariableCost').textContent = `${langData[currentLang].perPackageVariableCost} ${variableCostPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageLockerRent').textContent = `${langData[currentLang].perPackageLockerRent} ${dailyLockerRentPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageCompensation').textContent = `${langData[currentLang].perPackageCompensation} ${compensationPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageFuelCost').textContent = `${langData[currentLang].perPackageFuelCost} ${fuelPerPackage.toFixed(2)} €`;
 
                 // Automaattikohtaiset kulut
-                document.getElementById('dailyVariableCostsBreakdown').textContent = `Muuttuvat kustannukset (per automaatti): ${dailyVariableCosts.toFixed(2)} €`;
-                document.getElementById('dailyLockerRentBreakdown').textContent = `Automaatin päivävuokra: ${dailyLockerRent.toFixed(2)} €`;
-                document.getElementById('stopWageCostBreakdown').textContent = `Kompensaatio (pysähdys, per automaatti): ${stopWageCostPerLocker.toFixed(2)} €`;
+                document.getElementById('dailyVariableCostsBreakdown').textContent = `${langData[currentLang].dailyVariableCostsBreakdown} ${dailyVariableCosts.toFixed(2)} €`;
+                document.getElementById('dailyLockerRentBreakdown').textContent = `${langData[currentLang].dailyLockerRentBreakdown} ${dailyLockerRent.toFixed(2)} €`;
+                document.getElementById('stopWageCostBreakdown').textContent = `${langData[currentLang].stopWageCostBreakdown} ${stopWageCostPerLocker.toFixed(2)} €`;
                 
                 // Reitin kiinteät kulut
-                document.getElementById('fuelCostBreakdown').textContent = `Polttoainekustannukset: ${fuelCost.toFixed(2)} €`;
-                document.getElementById('wageCostBreakdown').textContent = `Kompensaatio (ajo ja pysähdys): ${(wageCost + totalStopWageCost).toFixed(2)} €`;
+                document.getElementById('fuelCostBreakdown').textContent = `${langData[currentLang].fuelCostBreakdown} ${fuelCost.toFixed(2)} €`;
+                document.getElementById('wageCostBreakdown').textContent = `${langData[currentLang].wageCostBreakdown} ${(wageCost + totalStopWageCost).toFixed(2)} €`;
 
                 // Nettotulos
                 const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;
                 
-                document.getElementById('netProfitPerPackageBreakdown').textContent = `Päivittäinen nettotulos per paketti: ${netProfitPerPackage.toFixed(2)} €`;
-                document.getElementById('netProfitPerLockerBreakdown').textContent = `Päivittäinen nettotulos per automaatti: ${netProfitPerLocker.toFixed(2)} €`;
-                document.getElementById('totalDailyNetProfitBreakdown').textContent = `Päivittäinen kokonaisnettotulos: ${totalDailyNetProfit.toFixed(2)} €`;
+                document.getElementById('netProfitPerPackageBreakdown').textContent = `${langData[currentLang].netProfitPerPackageBreakdown} ${netProfitPerPackage.toFixed(2)} €`;
+                document.getElementById('totalDailyNetProfitBreakdown').textContent = `${langData[currentLang].totalDailyNetProfitBreakdown} ${totalDailyNetProfit.toFixed(2)} €`;
 
                 detailedBreakdownDiv.style.display = 'block';
             }
@@ -581,11 +766,11 @@
                 const variableCostPerPackage = parseFloat(variableCostInput.value);
 
                 if (!destinationName) {
-                    showModal('Virhe', 'Syötä paikkakunnan nimi jatkaaksesi.');
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].noRouteFound(destinationName));
                     return;
                 }
                 if (isNaN(packagesPerLocker) || packagesPerLocker <= 0) {
-                    showModal('Virhe', 'Syötä kelvollinen pakettimäärä (> 0).');
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);
                     return;
                 }
 
@@ -598,7 +783,7 @@
                 try {
                     const destinationCoords = await getCityCoordinates(destinationName);
                     if (!destinationCoords) {
-                        throw new Error(`Paikkakuntaa "${destinationName}" ei löydy. Tarkista kirjoitusasu.`);
+                        throw new Error(langData[currentLang].noRouteFound(destinationName));
                     }
 
                     let closestTerminalName = null;
@@ -639,7 +824,7 @@
                     const fixedDailyCost = fuelCost + wageCost;
 
                     if (netProfitPerLocker <= 0) {
-                        throw new Error("Negatiivinen nettotuotto, reitti ei ole kannattava millään automaattimäärällä.");
+                        throw new Error(langData[currentLang].noProfit);
                     }
 
                     const breakEvenPoint = fixedDailyCost / netProfitPerLocker;
@@ -691,9 +876,9 @@
 
             document.addEventListener('DOMContentLoaded', () => {
                 // Initial update on page load
+                updateLanguage('fi');
                 updateAllCalculations();
             });
     </script>
 </body>
 </html>
-
