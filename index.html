@@ -32,13 +32,17 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
-        /* Custom Budbee-specific styling for the button */
-        #analyzeButton, #detailsButton {
+        #analyzeButton, #detailsButton, .link-button, #saveUserVariableCost {
             background-color: #5bb37d;
             color: white;
             transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;
+            text-decoration: none;
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
         }
-        #analyzeButton:hover, #detailsButton:hover {
+        #analyzeButton:hover, #detailsButton:hover, .link-button:hover, #saveUserVariableCost:hover {
             background-color: #4b8f67;
             transform: scale(1.05);
         }
@@ -61,6 +65,10 @@
                 <label for="ppldInput" class="block text-gray-700 font-semibold mb-2">PPLD:</label>
                 <input type="number" id="ppldInput" value="10" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
             </div>
+            <div>
+                <label for="variableCostInput" class="block text-gray-700 font-semibold mb-2">Muuttuva kulu per paketti (€):</label>
+                <input type="number" id="variableCostInput" value="1.93" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
+            </div>
             <button id="analyzeButton" class="w-full font-bold py-3 px-4 rounded-lg">
                 Analysoi
             </button>
@@ -77,12 +85,30 @@
                     <p class="text-sm text-gray-500">Lähin terminaali:</p>
                     <p id="closestTerminal" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
+                
+                <!-- Manual Route Data Input -->
+                <div class="bg-white p-4 rounded-lg shadow-sm space-y-2">
+                    <h3 class="font-semibold text-gray-700">Muokkaa reitin tietoja:</h3>
+                    <div>
+                        <label for="manualDistanceInput" class="block text-sm text-gray-500 mb-1">Matka (km) yhteensä:</label>
+                        <input type="number" id="manualDistanceInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label for="manualHoursInput" class="block text-sm text-gray-500 mb-1">Aika (tuntia) yhteensä:</label>
+                        <input type="number" id="manualHoursInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                    <div>
+                        <label for="manualMinutesInput" class="block text-sm text-gray-500 mb-1">Aika (minuuttia) yhteensä:</label>
+                        <input type="number" id="manualMinutesInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">
+                    </div>
+                </div>
+
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Matka (meno-paluu):</p>
+                    <p class="text-sm text-gray-500">Matka:</p>
                     <p id="routeDistance" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <p class="text-sm text-gray-500">Matkaan kuluva aika (meno-paluu):</p>
+                    <p class="text-sm text-gray-500">Matkaan kuluva aika:</p>
                     <p id="routeTime" class="text-lg font-semibold text-budbee-green"></p>
                 </div>
                 <div class="bg-white p-4 rounded-lg shadow-sm">
@@ -106,14 +132,18 @@
                     <p id="breakEvenPoint" class="text-2xl font-bold text-budbee-purple"></p>
                     <p id="breakEvenDetails" class="text-sm text-gray-500"></p>
                 </div>
-                <!-- New field for manual locker count entry -->
+                
                 <div class="bg-white p-4 rounded-lg shadow-sm">
-                    <label for="manualLockerCountInput" class="block text-gray-700 font-semibold mb-2">Muokkaa automaattimäärää:</label>
+                    <label for="manualLockerCountInput" class="block text-gray-700 font-semibold mb-2">Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):</label>
                     <input type="number" id="manualLockerCountInput" step="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">
                 </div>
+                
                 <button id="detailsButton" class="w-full mt-4 font-bold py-3 px-4 rounded-lg">
                     Tarkka erittely
                 </button>
+                <a id="mapsLink" href="#" target="_blank" class="w-full mt-4 link-button text-center">
+                    Avaa reitti Google Mapsissa
+                </a>
             </div>
             
             <div id="detailedBreakdown" class="bg-white p-6 mt-4 rounded-lg shadow-inner border border-gray-300" style="display: none;">
@@ -167,243 +197,234 @@
 
     </div>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const destinationInput = document.getElementById('destinationInput');
-            const ppldInput = document.getElementById('ppldInput');
-            const manualLockerCountInput = document.getElementById('manualLockerCountInput');
-            const analyzeButton = document.getElementById('analyzeButton');
-            const detailsButton = document.getElementById('detailsButton');
-            const detailedBreakdownDiv = document.getElementById('detailedBreakdown');
+    <script type="module">
+        // Poistettu Firebase-tuonnit ja kaikki niihin liittyvät muuttujat, toiminnot ja tapahtumankäsittelijät.
 
-            const resultsDiv = document.getElementById('results');
-            const loadingDiv = document.getElementById('loading');
-            const resultContentDiv = document.getElementById('resultContent');
-            const errorDiv = document.getElementById('error');
-            const errorMessageSpan = document.getElementById('errorMessage');
+        const destinationInput = document.getElementById('destinationInput');
+        const ppldInput = document.getElementById('ppldInput');
+        const variableCostInput = document.getElementById('variableCostInput');
+        const manualLockerCountInput = document.getElementById('manualLockerCountInput');
+        const manualDistanceInput = document.getElementById('manualDistanceInput');
+        const manualHoursInput = document.getElementById('manualHoursInput');
+        const manualMinutesInput = document.getElementById('manualMinutesInput');
+        const analyzeButton = document.getElementById('analyzeButton');
+        const detailsButton = document.getElementById('detailsButton');
+        const detailedBreakdownDiv = document.getElementById('detailedBreakdown');
+        const mapsLink = document.getElementById('mapsLink');
 
-            const closestTerminalSpan = document.getElementById('closestTerminal');
-            const routeDistanceSpan = document.getElementById('routeDistance');
-            const routeTimeSpan = document.getElementById('routeTime');
-            const totalStopDurationSpan = document.getElementById('totalStopDuration');
-            const totalRouteDurationSpan = document.getElementById('totalRouteDuration');
-            const fixedCostSpan = document.getElementById('fixedCost');
-            const netProfitPerLockerSpan = document.getElementById('netProfitPerLocker');
-            const breakEvenPointSpan = document.getElementById('breakEvenPoint');
-            const breakEvenDetailsSpan = document.getElementById('breakEvenDetails');
+        const resultsDiv = document.getElementById('results');
+        const loadingDiv = document.getElementById('loading');
+        const resultContentDiv = document.getElementById('resultContent');
+        const errorDiv = document.getElementById('error');
+        const errorMessageSpan = document.getElementById('errorMessage');
 
-            const modal = document.getElementById('modal');
-            const modalTitle = document.getElementById('modalTitle');
-            const modalMessage = document.getElementById('modalMessage');
-            const modalCloseButton = document.getElementById('modalCloseButton');
+        const closestTerminalSpan = document.getElementById('closestTerminal');
+        const routeDistanceSpan = document.getElementById('routeDistance');
+        const routeTimeSpan = document.getElementById('routeTime');
+        const totalStopDurationSpan = document.getElementById('totalStopDuration');
+        const totalRouteDurationSpan = document.getElementById('totalRouteDuration');
+        const fixedCostSpan = document.getElementById('fixedCost');
+        const netProfitPerLockerSpan = document.getElementById('netProfitPerLocker');
+        const breakEvenPointSpan = document.getElementById('breakEvenPoint');
+        const breakEvenDetailsSpan = document.getElementById('breakEvenDetails');
 
-            // Store calculated values to be used in the detailed breakdown
-            let cachedCalculations = null;
-            let cachedBreakevenPoint = null;
-            let cachedRouteDuration = null;
-            let cachedClosestTerminalName = null;
-            let cachedVehicleType = null;
+        const modal = document.getElementById('modal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+        
+        let cachedCalculations = null;
+        let cachedRouteDuration = null;
+        let cachedClosestTerminalName = null;
+        let cachedVehicleType = null;
+        let cachedRouteDistance = null;
+        let cachedClosestTerminalAddress = null;
+        let cachedDestinationName = null;
+        
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.style.display = 'flex';
+        }
 
-            // Näyttää mukautetun modaali-ikkunan
-            function showModal(title, message) {
-                modalTitle.textContent = title;
-                modalMessage.textContent = message;
-                modal.style.display = 'flex';
-            }
+        modalCloseButton.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
 
-            modalCloseButton.addEventListener('click', () => {
-                modal.style.display = 'none';
-            });
+        const terminals = {
+            'Vantaa': { lat: 60.290314, lon: 24.96513, address: 'Tammiston Kauppatie 11 B, 01510 Vantaa', vehicle: 'pullis' },
+            'Jyväskylä': { lat: 62.242637, lon: 25.747355, address: 'Kuormaajantie 6 / Suluntie, 40320 Jyväskylä', vehicle: 'pakettiauto' },
+            'Kuopio': { lat: 62.905646, lon: 27.683674, address: 'Kisällinkatu 5, 70780 Kuopio', vehicle: 'pakettiauto' },
+            'Lahti': { lat: 60.98595, lon: 25.64253, address: 'Vuoripojankatu 16, 15210 Lahti', vehicle: 'pakettiauto' },
+            'Oulu': { lat: 65.01168, lon: 25.47167, address: 'Graniittitie 6, 90550 Oulu', vehicle: 'pakettiauto' },
+            'Tampere': { lat: 61.4981, lon: 23.7606, address: 'Kytömaankatu 11, Tampere 33720', vehicle: 'pakettiauto' },
+            'Turku': { lat: 60.4518, lon: 22.2666, address: 'Länsi-Avantintie 8, 21420 Turku', vehicle: 'pakettiauto' },
+            'Joensuu': { lat: 62.6006, lon: 29.7634, address: 'Wahlforssinkatu 9 A, 80100 Joensuu', vehicle: 'pakettiauto' },
+            'Vaasa': { lat: 63.0954, lon: 21.6163, address: 'Konttoritie 12, 65610 Vaasa', vehicle: 'pakettiauto' },
+            'Pori': { lat: 61.4862, lon: 21.795, address: 'Karjalankatu 11, 28130 Pori', vehicle: 'pakettiauto' },
+            'Lappeenranta': { lat: 61.0594, lon: 28.1873, address: 'Ratakatu 41, 53100 Lappeenranta', vehicle: 'pakettiauto' }
+        };
 
-            // Terminallien sijainnit (lat, lon) ja osoitteet
-            const terminals = {
-                'Vantaa': { lat: 60.290314, lon: 24.96513, address: 'Tammiston Kauppatie 11 B, 01510 Vantaa', vehicle: 'pullis' },
-                'Jyväskylä': { lat: 62.242637, lon: 25.747355, address: 'Kuormaajantie 6 / Suluntie, 40320 Jyväskylä', vehicle: 'pakettiauto' },
-                'Kuopio': { lat: 62.905646, lon: 27.683674, address: 'Kisällinkatu 5, 70780 Kuopio', vehicle: 'pakettiauto' },
-                'Lahti': { lat: 60.98595, lon: 25.64253, address: 'Vuoripojankatu 16, 15210 Lahti', vehicle: 'pakettiauto' },
-                'Oulu': { lat: 65.01168, lon: 25.47167, address: 'Graniittitie 6, 90550 Oulu', vehicle: 'pakettiauto' },
-                'Tampere': { lat: 61.4981, lon: 23.7606, address: 'Kytömaankatu 11, Tampere 33720', vehicle: 'pakettiauto' },
-                'Turku': { lat: 60.4518, lon: 22.2666, address: 'Länsi-Avantintie 8, 21420 Turku', vehicle: 'pakettiauto' },
-                'Joensuu': { lat: 62.6006, lon: 29.7634, address: 'Wahlforssinkatu 9 A, 80100 Joensuu', vehicle: 'pakettiauto' },
-                'Vaasa': { lat: 63.0954, lon: 21.6163, address: 'Konttoritie 12, 65610 Vaasa', vehicle: 'pakettiauto' },
-                'Pori': { lat: 61.4862, lon: 21.795, address: 'Karjalankatu 11, 28130 Pori', vehicle: 'pakettiauto' },
-                'Lappeenranta': { lat: 61.0594, lon: 28.1873, address: 'Ratakatu 41, 53100 Lappeenranta', vehicle: 'pakettiauto' }
-            };
+        const incomePerPackage = 3.57; // €
+        const dailyLockerRent = 5.24; // €
+        const stopDuration = 6.49; // minuuttia
 
-            // Pakettiautomaattikohtaiset tiedot (osittain manuaalinen)
-            const incomePerPackage = 3.57; // €
-            const variableCostPerPackage = 1.93; // €
-            const dailyLockerRent = 5.24; // €
-            const stopDuration = 6.49; // minuuttia
+        const fuelPrice = 1.85; // €/l
+        const vehicleCosts = {
+            'pullis': { hourly: 32.33, fuelConsumption: 13 },
+            'pakettiauto': { hourly: 28.34, fuelConsumption: 8 }
+        };
+        
+        const routeData = {
+            'Oulu-Tornio': { distance: 120, duration: 90 },
+            'Oulu-Kemi': { distance: 105, duration: 75 },
+            'Vaasa-Kokkola': { distance: 121, duration: 90 },
+            'Vaasa-Seinäjoki': { distance: 78, duration: 60 },
+            'Oulu-Rovaniemi': { distance: 220, duration: 165 },
+            'Vantaa-Hämeenlinna': { distance: 98, duration: 75 },
+            'Tampere-Hämeenlinna': { distance: 75, duration: 60 },
+            'Kuopio-Rovaniemi': { distance: 580, duration: 420 },
+            'Turku-Salo': { distance: 52, duration: 40 },
+            'Vantaa-Salo': { distance: 120, duration: 85 },
+            'Pori-Rauma': { distance: 50, duration: 40 },
+            'Turku-Rauma': { distance: 90, duration: 65 },
+            'Jyväskylä-Savonlinna': { distance: 190, duration: 150 },
+            'Lappeenranta-Savonlinna': { distance: 140, duration: 120 },
+            'Tampere-Kangasala': { distance: 16, duration: 20 },
+            'Vantaa-Kerava': { distance: 22, duration: 30 },
+            'Helsinki-Espoo': { distance: 17, duration: 25 },
+            'Helsinki-Vantaa': { distance: 20, duration: 25 },
+            'Oulu-Kempele': { distance: 15, duration: 20 },
+            'Tampere-Pirkkala': { distance: 15, duration: 20 },
+            'Turku-Kaarina': { distance: 10, duration: 15 },
+            'Jyväskylä-Muurame': { distance: 16, duration: 20 },
+            'Lahti-Hollola': { distance: 10, duration: 15 },
+            'Kuopio-Siilinjärvi': { distance: 25, duration: 25 },
+            'Joensuu-Liperi': { distance: 20, duration: 25 },
+            'Vaasa-Mustasaari': { distance: 10, duration: 15 },
+            'Pori-Ulvila': { distance: 10, duration: 15 },
+            'Lappeenranta-Imatra': { distance: 35, duration: 35 },
+            'Turku-Naantali': { distance: 15, duration: 20 },
+            'Turku-Raisio': { distance: 10, duration: 15 },
+            'Tampere-Ylöjärvi': { distance: 15, duration: 20 },
+            'Tampere-Nokia': { distance: 15, duration: 20 },
+            'Jyväskylä-Laukaa': { distance: 25, duration: 25 },
+            'Lahti-Orimattila': { distance: 25, duration: 25 },
+            'Vantaa-Tuusula': { distance: 20, duration: 25 },
+            'Kontiolahd': { distance: 20, duration: 25 },
+            'Ii': { distance: 35, duration: 30 },
+            'Lemi': { distance: 25, duration: 25 },
+            'Maalahti': { distance: 25, duration: 30 },
+            'Harjavalta': { distance: 30, duration: 30 },
+            'Iisalmi': { distance: 85, duration: 70 },
+            'Kotka': { distance: 120, duration: 90 },
+            'Kitee': { distance: 60, duration: 50 },
+            'Forssa': { distance: 55, duration: 45 },
+            'Somero': { distance: 40, duration: 35 },
+            'Ilmajoki': { distance: 15, duration: 15 },
+            'Mikkeli': { distance: 100, duration: 90 },
+            'Kankaanpää': { distance: 50, duration: 45 },
+            'Suonenjoki': { distance: 50, duration: 40 },
+            'Sastamala': { distance: 50, duration: 40 },
+            'Uusikaupunki': { distance: 70, duration: 60 },
+            'Kristiinankaupunki': { distance: 95, duration: 75 },
+            'Kemi': { distance: 100, duration: 75 },
+            'Lieksa': { distance: 95, duration: 80 },
+            'Kouvola': { distance: 60, duration: 50 },
+            'Hamina': { distance: 90, duration: 70 },
+            'Salo': { distance: 52, duration: 40 },
+            'Rauma': { distance: 50, duration: 40 },
+            'Valkeakoski': { distance: 35, duration: 35 },
+            'Säkylä': { distance: 65, duration: 60 },
+            'Heinola': { distance: 35, duration: 30 },
+            'Eura': { distance: 40, duration: 35 },
+            'Jämsä': { distance: 60, duration: 50 },
+            'Kuusamo': { distance: 215, duration: 165 },
+            'Tornio': { distance: 120, duration: 90 },
+            'Uusikaarlepyy': { distance: 75, duration: 60 },
+        };
 
-            // Polttoainehinnat ja ajoneuvokustannukset
-            const fuelPrice = 1.85; // €/l
-            const vehicleCosts = {
-                'pullis': { hourly: 32.33, fuelConsumption: 13 },
-                'pakettiauto': { hourly: 28.34, fuelConsumption: 8 }
-            };
+        async function getRouteData(origin, destination) {
+            const key = `${origin}-${destination}`;
+            const reverseKey = `${destination}-${origin}`;
+            return new Promise(resolve => setTimeout(() => {
+                if (routeData[key]) {
+                    resolve({
+                        distance: routeData[key].distance,
+                        duration: routeData[key].duration
+                    });
+                } else if (routeData[reverseKey]) {
+                    resolve({
+                        distance: routeData[reverseKey].distance,
+                        duration: routeData[reverseKey].duration
+                    });
+                } else {
+                    resolve(null);
+                }
+            }, 1000));
+        }
 
-            // Simuloitu reittidata
-            const routeData = {
-                'Vaasa-Kokkola': { distance: 122, duration: 90 },
-                'Oulu-Kokkola': { distance: 198, duration: 150 },
-                'Tampere-Kokkola': { distance: 304, duration: 210 },
-                'Jyväskylä-Kokkola': { distance: 240, duration: 180 },
-                'Vantaa-Kokkola': { distance: 480, duration: 330 },
-                'Turku-Kokkola': { distance: 420, duration: 300 },
-                'Pori-Kokkola': { distance: 290, duration: 200 },
-                'Kuopio-Kokkola': { distance: 310, duration: 220 },
-                'Joensuu-Kokkola': { distance: 410, duration: 280 },
-                'Lappeenranta-Kokkola': { distance: 470, duration: 320 },
-                'Vantaa-Hämeenlinna': { distance: 98, duration: 75 },
-                'Tampere-Hämeenlinna': { distance: 75, duration: 60 },
-                'Kuopio-Rovaniemi': { distance: 580, duration: 420 },
-                'Oulu-Rovaniemi': { distance: 220, duration: 165 },
-                'Turku-Salo': { distance: 52, duration: 40 },
-                'Vantaa-Salo': { distance: 120, duration: 85 },
-                'Pori-Rauma': { distance: 50, duration: 40 },
-                'Turku-Rauma': { distance: 90, duration: 65 },
-                'Jyväskylä-Savonlinna': { distance: 190, duration: 150 },
-                'Lappeenranta-Savonlinna': { distance: 140, duration: 120 },
-                'Vaasa-Seinäjoki': { distance: 78, duration: 60 },
-                'Tampere-Kangasala': { distance: 16, duration: 20 },
-                'Vantaa-Kerava': { distance: 22, duration: 30 },
-                'Helsinki-Espoo': { distance: 17, duration: 25 },
-                'Helsinki-Vantaa': { distance: 20, duration: 25 },
-                'Oulu-Kempele': { distance: 15, duration: 20 },
-                'Tampere-Pirkkala': { distance: 15, duration: 20 },
-                'Turku-Kaarina': { distance: 10, duration: 15 },
-                'Jyväskylä-Muurame': { distance: 16, duration: 20 },
-                'Lahti-Hollola': { distance: 10, duration: 15 },
-                'Kuopio-Siilinjärvi': { distance: 25, duration: 25 },
-                'Joensuu-Liperi': { distance: 20, duration: 25 },
-                'Vaasa-Mustasaari': { distance: 10, duration: 15 },
-                'Pori-Ulvila': { distance: 10, duration: 15 },
-                'Lappeenranta-Imatra': { distance: 35, duration: 35 },
-                'Turku-Naantali': { distance: 15, duration: 20 },
-                'Turku-Raisio': { distance: 10, duration: 15 },
-                'Tampere-Ylöjärvi': { distance: 15, duration: 20 },
-                'Tampere-Nokia': { distance: 15, duration: 20 },
-                'Jyväskylä-Laukaa': { distance: 25, duration: 25 },
-                'Lahti-Orimattila': { distance: 25, duration: 25 },
-                'Vantaa-Tuusula': { distance: 20, duration: 25 },
-                'Kontiolahd': { distance: 20, duration: 25 },
-                'Ii': { distance: 35, duration: 30 },
-                'Lemi': { distance: 25, duration: 25 },
-                'Maalahti': { distance: 25, duration: 30 },
-                'Harjavalta': { distance: 30, duration: 30 },
-                'Iisalmi': { distance: 85, duration: 70 },
-                'Kotka': { distance: 120, duration: 90 },
-                'Kitee': { distance: 60, duration: 50 },
-                'Forssa': { distance: 55, duration: 45 },
-                'Somero': { distance: 40, duration: 35 },
-                'Ilmajoki': { distance: 15, duration: 15 },
-                'Mikkeli': { distance: 100, duration: 90 },
-                'Kankaanpää': { distance: 50, duration: 45 },
-                'Suonenjoki': { distance: 50, duration: 40 },
-                'Sastamala': { distance: 50, duration: 40 },
-                'Uusikaupunki': { distance: 70, duration: 60 },
-                'Kristiinankaupunki': { distance: 95, duration: 75 },
-                'Kemi': { distance: 100, duration: 75 },
-                'Lieksa': { distance: 95, duration: 80 },
-                'Kouvola': { distance: 60, duration: 50 },
-                'Hamina': { distance: 90, duration: 70 },
-                'Salo': { distance: 52, duration: 40 },
-                'Rauma': { distance: 50, duration: 40 },
-                'Valkeakoski': { distance: 35, duration: 35 },
-                'Säkylä': { distance: 65, duration: 60 },
-                'Heinola': { distance: 35, duration: 30 },
-                'Eura': { distance: 40, duration: 35 },
-                'Jämsä': { distance: 60, duration: 50 },
-                'Kuusamo': { distance: 215, duration: 165 },
-                'Tornio': { distance: 120, duration: 90 },
-                'Uusikaarlepyy': { distance: 75, duration: 60 },
-            };
+        function haversineDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371;
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+            return R * c;
+        }
 
-            // Hakee etäisyyden ja keston Google Mapsin Directions API:sta (simuloitu)
-            async function getRouteData(origin, destination) {
-                const key = `${origin}-${destination}`;
-                const reverseKey = `${destination}-${origin}`;
-                return new Promise(resolve => setTimeout(() => {
-                    if (routeData[key]) {
-                        resolve({
-                            distance: routeData[key].distance,
-                            duration: routeData[key].duration
-                        });
-                    } else if (routeData[reverseKey]) {
-                        resolve({
-                            distance: routeData[reverseKey].distance,
-                            duration: routeData[reverseKey].duration
-                        });
-                    } else {
-                        resolve(null);
-                    }
-                }, 1000));
-            }
-
-            // Etäisyyden laskenta kahden pisteen (lat, lon) välillä
-            function haversineDistance(lat1, lon1, lat2, lon2) {
-                const R = 6371; // Maapallon säde kilometreissä
-                const dLat = (lat2 - lat1) * Math.PI / 180;
-                const dLon = (lon2 - lon1) * Math.PI / 180;
-                const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-                          Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-                          Math.sin(dLon / 2) * Math.sin(dLon / 2);
-                const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-                return R * c; // Etäisyys km
-            }
-
-            // Hakee kohdekaupungin koordinaatit Google Geocoding API:lla (simuloitu)
-            async function getCityCoordinates(cityName) {
-                const cityCoordinates = {
-                    'Helsinki': { lat: 60.1695, lon: 24.9354 }, 'Espoo': { lat: 60.2055, lon: 24.6559 },
-                    'Tampere': { lat: 61.4991, lon: 23.7871 }, 'Vantaa': { lat: 60.2931, lon: 25.0401 },
-                    'Oulu': { lat: 65.0123, lon: 25.4682 }, 'Turku': { lat: 60.4518, lon: 22.2666 },
-                    'Jyväskylä': { lat: 62.2426, lon: 25.7473 }, 'Kuopio': { lat: 62.8924, lon: 27.6775 },
-                    'Lahti': { lat: 60.9858, lon: 25.6559 }, 'Pori': { lat: 61.4862, lon: 21.7950 },
-                    'Joensuu': { lat: 62.6006, lon: 29.7634 }, 'Vaasa': { lat: 63.0954, lon: 21.6163 },
-                    'Lappeenranta': { lat: 61.0594, lon: 28.1873 }, 'Kokkola': { lat: 63.8385, lon: 23.1309 },
-                    'Kouvola': { lat: 60.8667, lon: 26.7083 }, 'Rovaniemi': { lat: 66.5039, lon: 25.7294 },
-                    'Hämeenlinna': { lat: 60.9942, lon: 24.4646 }, 'Seinäjoki': { lat: 62.7931, lon: 22.8407 },
-                    'Mikkeli': { lat: 61.6872, lon: 27.7056 }, 'Salo': { lat: 60.3789, lon: 23.1344 },
-                    'Kotka': { lat: 60.4650, lon: 26.9450 }, 'Porvoo': { lat: 60.3958, lon: 25.6657 },
-                    'Hyvinkää': { lat: 60.6300, lon: 24.8569 }, 'Lohja': { lat: 60.2500, lon: 24.0667 },
-                    'Järvenpää': { lat: 60.4700, lon: 25.0800 }, 'Tornio': { lat: 65.8454, lon: 24.1457 },
-                    'Savonlinna': { lat: 61.8687, lon: 28.8778 }, 'Riihimäki': { lat: 60.7410, lon: 24.7735 },
-                    'Iisalmi': { lat: 63.5601, lon: 27.1895 }, 'Varkaus': { lat: 62.3150, lon: 27.8732 },
-                    'Rauma': { lat: 61.1293, lon: 21.5170 }, 'Sastamala': { lat: 61.3414, lon: 22.9099 },
-                    'Ylöjärvi': { lat: 61.5544, lon: 23.5936 }, 'Kangasala': { lat: 61.4651, lon: 24.0621 },
-                    'Nokia': { lat: 61.4776, lon: 23.4988 }, 'Pirkkala': { lat: 61.4429, lon: 23.6366 },
-                    'Kaarina': { lat: 60.4079, lon: 22.3687 }, 'Raisio': { lat: 60.4801, lon: 21.7042 },
-                    'Naantali': { lat: 60.4674, lon: 22.0298 }, 'Uusikaupunki': { lat: 60.8000, lon: 21.4000 },
-                    'Forssa': { lat: 60.8143, lon: 23.6265 }, 'Kristiinankaupunki': { lat: 62.2709, lon: 21.3789 },
-                    'Pietarsaari': { lat: 63.6766, lon: 22.7040 }, 'Kokemäki': { lat: 61.2583, lon: 22.3418 },
-                    'Imatra': { lat: 61.1833, lon: 28.7667 }, 'Nurmijärvi': { lat: 60.4658, lon: 24.7891 },
-                    'Tuusula': { lat: 60.4093, lon: 25.0210 }, 'Kerava': { lat: 60.4026, lon: 25.0931 },
-                    'Kirkkonummi': { lat: 60.1258, lon: 24.4363 }, 'Vihti': { lat: 60.4206, lon: 24.3218 },
-                    'Sipoo': { lat: 60.3700, lon: 25.2600 }, 'Kuusamo': { lat: 65.9667, lon: 29.1833 },
-                    'Kempele': { lat: 64.9084, lon: 25.5034 }, 'Iitti': { lat: 60.8950, lon: 26.3400 },
-                    'Keminmaa': { lat: 65.7950, lon: 24.5422 }, 'Lempäälä': { lat: 61.3146, lon: 23.7547 },
-                    'Mäntsälä': { lat: 60.6389, lon: 25.3218 }, 'Orimattila': { lat: 60.7909, lon: 25.7196 },
-                    'Jämsä': { lat: 61.8696, lon: 25.2891 }, 'Siilinjärvi': { lat: 63.0805, lon: 27.6521 },
-                    'Liperi': { lat: 62.5312, lon: 29.5085 }, 'Lieksa': { lat: 63.3167, lon: 30.0167 },
-                    'Kite': { lat: 62.0911, lon: 30.1408 }, 'Hamina': { lat: 60.5700, lon: 27.1100 },
-                    'Karkkila': { lat: 60.5361, lon: 24.2185 }, 'Orivesi': { lat: 61.6700, lon: 24.3600 },
-                    'Harjavalta': { lat: 61.3094, lon: 22.1481 }, 'Ulvila': { lat: 61.4398, lon: 21.8906 },
-                    'Laukaa': { lat: 62.4045, lon: 25.9615 }, 'Muurame': { lat: 62.1332, lon: 25.7402 },
-                    'Lempäälä': { lat: 61.3146, lon: 23.7547 }, 'Keuruu': { lat: 62.2612, lon: 24.7214 },
-                    'Säkylä': { lat: 60.8996, lon: 22.3421 }, 'Eura': { lat: 61.1345, lon: 22.3212 },
-                    'Kankaanpää': { lat: 61.7850, lon: 22.4000 }, 'Ilmajoki': { lat: 62.7291, lon: 22.5694 },
-                    'Mustasaari': { lat: 63.1026, lon: 21.6841 }, 'Maalahti': { lat: 62.9691, lon: 21.5794 },
-                    'Kemi': { lat: 65.7728, lon: 24.5661 }, 'Ii': { lat: 65.3400, lon: 25.3700 },
-                    'Pyhäjoki': { lat: 64.4600, lon: 24.2500 }, 'Kalajoki': { lat: 64.2500, lon: 23.9500 },
-                    'Kannus': { lat: 63.9000, lon: 23.9000 }, 'Suonenjoki': { lat: 62.6247, lon: 27.1894 },
-                    'Kangasniemi': { lat: 61.9800, lon: 26.6300 }, 'Mäntyharju': { lat: 61.1700, lon: 26.8300 },
-                    'Heinola': { lat: 61.2000, lon: 26.0500 }, 'Nivala': { lat: 63.9200, lon: 24.9600 },
-                    'Haapajärvi': { lat: 63.7500, lon: 25.3300 }, 'Pieksämäki': { lat: 62.3000, lon: 27.5100 },
-                    'Keuruu': { lat: 62.2612, lon: 24.7214 }, 'Viitasaari': { lat: 63.0700, lon: 25.8600 },
-                    'Kajaani': { lat: 64.2250, lon: 27.7300 }, 'Kuusankoski': { lat: 60.9000, lon: 26.2500 },
-                    'Närpiö': { lat: 62.4700, lon: 21.8000 }, 'Sodankylä': { lat: 67.4100, lon: 26.6000 }
+        async function getCityCoordinates(cityName) {
+            const cityCoordinates = {
+                'Helsinki': { lat: 60.1695, lon: 24.9354 }, 'Espoo': { lat: 60.2055, lon: 24.6559 },
+                'Tampere': { lat: 61.4991, lon: 23.7871 }, 'Vantaa': { lat: 60.2931, lon: 25.0401 },
+                'Oulu': { lat: 65.0123, lon: 25.4682 }, 'Turku': { lat: 60.4518, lon: 22.2666 },
+                'Jyväskylä': { lat: 62.2426, lon: 25.7473 }, 'Kuopio': { lat: 62.8924, lon: 27.6775 },
+                'Lahti': { lat: 60.9858, lon: 25.6559 }, 'Pori': { lat: 61.4862, lon: 21.7950 },
+                'Joensuu': { lat: 62.6006, lon: 29.7634 }, 'Vaasa': { lat: 63.0954, lon: 21.6163 },
+                'Lappeenranta': { lat: 61.0594, lon: 28.1873 }, 'Kokkola': { lat: 63.8385, lon: 23.1309 },
+                'Kouvola': { lat: 60.8667, lon: 26.7083 }, 'Rovaniemi': { lat: 66.5039, lon: 25.7294 },
+                'Hämeenlinna': { lat: 60.9942, lon: 24.4646 }, 'Seinäjoki': { lat: 62.7931, lon: 22.8407 },
+                'Mikkeli': { lat: 61.6872, lon: 27.7056 }, 'Salo': { lat: 60.3789, lon: 23.1344 },
+                'Kotka': { lat: 60.4650, lon: 26.9450 }, 'Porvoo': { lat: 60.3958, lon: 25.6657 },
+                'Hyvinkää': { lat: 60.6300, lon: 24.8569 }, 'Lohja': { lat: 60.2500, lon: 24.0667 },
+                'Järvenpää': { lat: 60.4700, lon: 25.0800 }, 'Tornio': { lat: 65.8454, lon: 24.1457 },
+                'Savonlinna': { lat: 61.8687, lon: 28.8778 }, 'Riihimäki': { lat: 60.7410, lon: 24.7735 },
+                'Iisalmi': { lat: 63.5601, lon: 27.1895 }, 'Varkaus': { lat: 62.3150, lon: 27.8732 },
+                'Rauma': { lat: 61.1293, lon: 21.5170 }, 'Sastamala': { lat: 61.3414, lon: 22.9099 },
+                'Ylöjärvi': { lat: 61.5544, lon: 23.5936 }, 'Kangasala': { lat: 61.4651, lon: 24.0621 },
+                'Nokia': { lat: 61.4776, lon: 23.4988 }, 'Pirkkala': { lat: 61.4429, lon: 23.6366 },
+                'Kaarina': { lat: 60.4079, lon: 22.3687 }, 'Raisio': { lat: 60.4801, lon: 21.7042 },
+                'Naantali': { lat: 60.4674, lon: 22.0298 }, 'Uusikaupunki': { lat: 60.8000, lon: 21.4000 },
+                'Forssa': { lat: 60.8143, lon: 23.6265 }, 'Kristiinankaupunki': { lat: 62.2709, lon: 21.3789 },
+                'Pietarsaari': { lat: 63.6766, lon: 22.7040 }, 'Kokemäki': { lat: 61.2583, lon: 22.3418 },
+                'Imatra': { lat: 61.1833, lon: 28.7667 }, 'Nurmijärvi': { lat: 60.4658, lon: 24.7891 },
+                'Tuusula': { lat: 60.4093, lon: 25.0210 }, 'Kerava': { lat: 60.4026, lon: 25.0931 },
+                'Kirkkonummi': { lat: 60.1258, lon: 24.4363 }, 'Vihti': { lat: 60.4206, lon: 24.3218 },
+                'Sipoo': { lat: 60.3700, lon: 25.2600 }, 'Kuusamo': { lat: 65.9667, lon: 29.1833 },
+                'Kempele': { lat: 64.9084, lon: 25.5034 }, 'Iitti': { lat: 60.8950, lon: 26.3400 },
+                'Keminmaa': { lat: 65.7950, lon: 24.5422 }, 'Lempäälä': { lat: 61.3146, lon: 23.7547 },
+                'Mäntsälä': { lat: 60.6389, lon: 25.3218 }, 'Orimattila': { lat: 60.7909, lon: 25.7196 },
+                'Jämsä': { lat: 61.8696, lon: 25.2891 }, 'Siilinjärvi': { lat: 63.0805, lon: 27.6521 },
+                'Liperi': { lat: 62.5312, lon: 29.5085 }, 'Lieksa': { lat: 63.3167, lon: 30.0167 },
+                'Kite': { lat: 62.0911, lon: 30.1408 }, 'Hamina': { lat: 60.5700, lon: 27.1100 },
+                'Karkkila': { lat: 60.5361, lon: 24.2185 }, 'Orivesi': { lat: 61.6700, lon: 24.3600 },
+                'Harjavalta': { lat: 61.3094, lon: 22.1481 }, 'Ulvila': { lat: 61.4398, lon: 21.8906 },
+                'Laukaa': { lat: 62.4045, lon: 25.9615 }, 'Muurame': { lat: 62.1332, lon: 25.7402 },
+                'Lempäälä': { lat: 61.3146, lon: 23.7547 }, 'Keuruu': { lat: 62.2612, lon: 24.7214 },
+                'Säkylä': { lat: 60.8996, lon: 22.3421 }, 'Eura': { lat: 61.1345, lon: 22.3212 },
+                'Kankaanpää': { lat: 61.7850, lon: 22.4000 }, 'Ilmajoki': { lat: 62.7291, lon: 22.5694 },
+                'Mustasaari': { lat: 63.1026, lon: 21.6841 }, 'Maalahti': { lat: 62.9691, lon: 21.5794 },
+                'Kemi': { lat: 65.7728, lon: 24.5661 }, 'Ii': { lat: 65.3400, lon: 25.3700 },
+                'Pyhäjoki': { lat: 64.4600, lon: 24.2500 }, 'Kalajoki': { lat: 64.2500, lon: 23.9500 },
+                'Kannus': { lat: 63.9000, lon: 23.9000 }, 'Suonenjoki': { lat: 62.6247, lon: 27.1894 },
+                'Kangasniemi': { lat: 61.9800, lon: 26.6300 }, 'Mäntyharju': { lat: 61.1700, lon: 26.8300 },
+                'Heinola': { lat: 61.2000, lon: 26.0500 }, 'Nivala': { lat: 63.9200, lon: 24.9600 },
+                'Haapajärvi': { lat: 63.7500, lon: 25.3300 }, 'Pieksämäki': { lat: 62.3000, lon: 27.5100 },
+                'Keuruu': { lat: 62.2612, lon: 24.7214 }, 'Viitasaari': { lat: 63.0700, lon: 25.8600 },
+                'Kajaani': { lat: 64.2250, lon: 27.7300 }, 'Kuusankoski': { lat: 60.9000, lon: 26.2500 },
+                'Närpiö': { lat: 62.4700, lon: 21.8000 }, 'Sodankylä': { lat: 67.4100, lon: 26.6000 }
                 };
                 return new Promise(resolve => setTimeout(() => {
                     const normalizedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();
@@ -415,29 +436,149 @@
                 }, 500));
             }
 
-            // Päivittää pääanalyysin tulokset
-            function updateMainAnalysis(lockerCount, routeDuration) {
-                const totalStopDurationMinutes = stopDuration * lockerCount;
-                const totalRouteDurationMinutes = (routeDuration * 2) + totalStopDurationMinutes;
+            // Function to update all displayed values based on the current state
+            function updateAllCalculations() {
+                if (!cachedCalculations) return;
                 
-                totalStopDurationSpan.textContent = `${(totalStopDurationMinutes / 60).toFixed(2)} tuntia (${totalStopDurationMinutes.toFixed(0)} minuuttia)`;
-                totalRouteDurationSpan.textContent = `${(totalRouteDurationMinutes / 60).toFixed(2)} tuntia (${totalRouteDurationMinutes.toFixed(0)} minuuttia)`;
+                let totalDurationMinutes = cachedRouteDuration;
+                let totalDistance = cachedRouteDistance;
                 
-                // Päivitä myös muut pääanalyysin tiedot, jotka riippuvat automaattimäärästä
+                const manualDistance = parseFloat(manualDistanceInput.value);
+                const manualHours = parseFloat(manualHoursInput.value);
+                const manualMinutes = parseFloat(manualMinutesInput.value);
+
+                if (!isNaN(manualDistance) && manualDistance >= 0) {
+                    totalDistance = manualDistance;
+                }
+                
+                if (!isNaN(manualHours) && manualHours >= 0 && !isNaN(manualMinutes) && manualMinutes >= 0) {
+                    totalDurationMinutes = (manualHours * 60) + manualMinutes;
+                } else if (!isNaN(manualHours) && manualHours >= 0) {
+                    totalDurationMinutes = manualHours * 60;
+                } else if (!isNaN(manualMinutes) && manualMinutes >= 0) {
+                    totalDurationMinutes = manualMinutes;
+                }
+                
+                const totalDurationHours = totalDurationMinutes / 60;
+                
+                const vehicle = vehicleCosts[cachedVehicleType];
+                const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;
+                const wageCost = totalDurationHours * vehicle.hourly;
+                const newFixedDailyCost = fuelCost + wageCost;
+                
                 const netProfitPerLocker = cachedCalculations.netProfitPerLocker;
-                const fixedDailyCost = cachedCalculations.fixedDailyCost;
-                
-                fixedCostSpan.textContent = `${fixedDailyCost.toFixed(2)} €`;
+                const breakEvenPoint = newFixedDailyCost / netProfitPerLocker;
+                const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);
+
+                const lockerCount = manualLockerCountInput.value ? parseFloat(manualLockerCountInput.value) : roundedBreakEvenPoint;
+
+                const totalStopDurationMinutes = stopDuration * lockerCount;
+                const totalRouteDurationMinutes = totalDurationMinutes + totalStopDurationMinutes;
+
+                // Format time as "X tuntia Y minuuttia"
+                const formatTime = (totalMinutes) => {
+                    const hours = Math.floor(totalMinutes / 60);
+                    const minutes = Math.round(totalMinutes % 60);
+                    return `${hours} tuntia ${minutes} minuuttia`;
+                };
+
+                // Update main analysis results
+                closestTerminalSpan.textContent = cachedClosestTerminalName;
+                routeDistanceSpan.textContent = `${totalDistance.toFixed(0)} km`;
+                routeTimeSpan.textContent = formatTime(totalDurationMinutes);
+                totalStopDurationSpan.textContent = formatTime(totalStopDurationMinutes);
+                totalRouteDurationSpan.textContent = formatTime(totalRouteDurationMinutes);
+                fixedCostSpan.textContent = `${newFixedDailyCost.toFixed(2)} €`;
                 netProfitPerLockerSpan.textContent = `${netProfitPerLocker.toFixed(2)} € / päivä`;
-                
-                const breakEvenPoint = fixedDailyCost / netProfitPerLocker;
-                breakEvenPointSpan.textContent = `${Math.ceil(breakEvenPoint)} automaattia`;
+                breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} automaattia`;
                 breakEvenDetailsSpan.textContent = `(Tarkka luku oli ${breakEvenPoint.toFixed(2)})`;
+
+                // Update detailed breakdown if it's visible
+                if (detailedBreakdownDiv.style.display !== 'none') {
+                    updateBreakdown();
+                }
             }
 
+            // Päivitä erittely manuaalisen kentän perusteella
+            function updateBreakdown() {
+                if (!cachedCalculations) {
+                    detailedBreakdownDiv.style.display = 'none';
+                    return;
+                }
+
+                const manualLockerCount = parseFloat(manualLockerCountInput.value);
+                if (isNaN(manualLockerCount) || manualLockerCount <= 0) {
+                    showModal('Virhe', 'Syötä kelvollinen automaattimäärä.');
+                    detailedBreakdownDiv.style.display = 'none';
+                    return;
+                }
+                
+                const packagesPerLocker = parseFloat(ppldInput.value);
+                const variableCostPerPackage = parseFloat(variableCostInput.value);
+
+                let routeDistance = parseFloat(manualDistanceInput.value);
+                let routeDurationMinutes = (parseFloat(manualHoursInput.value) * 60) + parseFloat(manualMinutesInput.value);
+                
+                const vehicle = vehicleCosts[cachedVehicleType];
+                const fuelCost = (routeDistance / 100) * vehicle.fuelConsumption * fuelPrice;
+                const wageCost = (routeDurationMinutes / 60) * vehicle.hourly;
+                const fixedDailyCost = fuelCost + wageCost;
+                
+                const totalPackagesAtManualCount = manualLockerCount * packagesPerLocker;
+                
+                document.getElementById('totalPackagesAtBreakeven').textContent = `Pakettimäärä: ${totalPackagesAtManualCount.toFixed(0)} kpl / päivä`;
+
+                // Pakettikohtainen erittely
+                const hourlyRate = vehicle.hourly / 60;
+                const totalStopWageCost = stopDuration * hourlyRate * manualLockerCount;
+                
+                const compensationPerPackage = totalPackagesAtManualCount > 0 ? ((wageCost + totalStopWageCost) / totalPackagesAtManualCount) : 0;
+                const dailyLockerRentPerPackage = totalPackagesAtManualCount > 0 ? (dailyLockerRent * manualLockerCount / totalPackagesAtManualCount) : 0;
+                const fuelPerPackage = totalPackagesAtManualCount > 0 ? (fuelCost / totalPackagesAtManualCount) : 0;
+                
+                const netProfitPerPackage = incomePerPackage - variableCostPerPackage - dailyLockerRentPerPackage - compensationPerPackage - fuelPerPackage;
+                
+                // Recalculate net profit per locker based on the new variable cost
+                const dailyIncome = packagesPerLocker * incomePerPackage;
+                const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;
+                const stopWageCostPerLocker = stopDuration * hourlyRate;
+                const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCostPerLocker;
+
+                document.getElementById('perPackageIncome').textContent = `Tulo per paketti: ${incomePerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageVariableCost').textContent = `Muuttuva kulu per paketti: ${variableCostPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageLockerRent').textContent = `Automaattivuokra per paketti: ${dailyLockerRentPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageCompensation').textContent = `Kompensaatio (ajo ja pysähdys) per paketti: ${compensationPerPackage.toFixed(2)} €`;
+                document.getElementById('perPackageFuelCost').textContent = `Polttoainekustannus per paketti: ${fuelPerPackage.toFixed(2)} €`;
+
+                // Automaattikohtaiset kulut
+                document.getElementById('dailyVariableCostsBreakdown').textContent = `Muuttuvat kustannukset (per automaatti): ${dailyVariableCosts.toFixed(2)} €`;
+                document.getElementById('dailyLockerRentBreakdown').textContent = `Automaatin päivävuokra: ${dailyLockerRent.toFixed(2)} €`;
+                document.getElementById('stopWageCostBreakdown').textContent = `Kompensaatio (pysähdys, per automaatti): ${stopWageCostPerLocker.toFixed(2)} €`;
+                
+                // Reitin kiinteät kulut
+                document.getElementById('fuelCostBreakdown').textContent = `Polttoainekustannukset: ${fuelCost.toFixed(2)} €`;
+                document.getElementById('wageCostBreakdown').textContent = `Kompensaatio (ajo ja pysähdys): ${(wageCost + totalStopWageCost).toFixed(2)} €`;
+
+                // Nettotulos
+                const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;
+                
+                document.getElementById('netProfitPerPackageBreakdown').textContent = `Päivittäinen nettotulos per paketti: ${netProfitPerPackage.toFixed(2)} €`;
+                document.getElementById('netProfitPerLockerBreakdown').textContent = `Päivittäinen nettotulos per automaatti: ${netProfitPerLocker.toFixed(2)} €`;
+                document.getElementById('totalDailyNetProfitBreakdown').textContent = `Päivittäinen kokonaisnettotulos: ${totalDailyNetProfit.toFixed(2)} €`;
+
+                detailedBreakdownDiv.style.display = 'block';
+            }
+        
+            manualLockerCountInput.addEventListener('input', updateAllCalculations);
+            manualDistanceInput.addEventListener('input', updateAllCalculations);
+            manualHoursInput.addEventListener('input', updateAllCalculations);
+            manualMinutesInput.addEventListener('input', updateAllCalculations);
+            detailsButton.addEventListener('click', updateBreakdown);
+        
             analyzeButton.addEventListener('click', async () => {
                 const destinationName = destinationInput.value.trim();
                 const packagesPerLocker = parseFloat(ppldInput.value);
+                const variableCostPerPackage = parseFloat(variableCostInput.value);
 
                 if (!destinationName) {
                     showModal('Virhe', 'Syötä paikkakunnan nimi jatkaaksesi.');
@@ -452,7 +593,7 @@
                 loadingDiv.style.display = 'flex';
                 resultContentDiv.style.display = 'none';
                 errorDiv.style.display = 'none';
-                detailedBreakdownDiv.style.display = 'none'; // Hide details on new analysis
+                detailedBreakdownDiv.style.display = 'none';
 
                 try {
                     const destinationCoords = await getCityCoordinates(destinationName);
@@ -484,7 +625,8 @@
                     const vehicle = vehicleCosts[vehicleType];
 
                     const totalDistance = routeDistance * 2;
-                    const totalDurationHours = (routeDuration * 2) / 60;
+                    const totalDurationMinutes = routeDuration * 2;
+                    const totalDurationHours = totalDurationMinutes / 60;
                     
                     const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;
                     const wageCost = totalDurationHours * vehicle.hourly;
@@ -503,10 +645,11 @@
                     const breakEvenPoint = fixedDailyCost / netProfitPerLocker;
                     const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);
 
-                    // Asetetaan manuaalisen kentän oletusarvoksi laskettu arvo
                     manualLockerCountInput.value = roundedBreakEvenPoint;
+                    manualDistanceInput.value = totalDistance.toFixed(0);
+                    manualHoursInput.value = Math.floor(totalDurationMinutes / 60);
+                    manualMinutesInput.value = Math.round(totalDurationMinutes % 60);
 
-                    // Cache results for detailed breakdown
                     cachedCalculations = {
                         fixedDailyCost: fixedDailyCost,
                         fuelCost: fuelCost,
@@ -518,12 +661,17 @@
                         packagesPerLocker: packagesPerLocker,
                         hourlyRate: hourlyRate
                     };
-                    cachedBreakevenPoint = roundedBreakEvenPoint;
-                    cachedRouteDuration = routeDuration;
+                    cachedRouteDuration = totalDurationMinutes;
                     cachedClosestTerminalName = closestTerminalName;
+                    cachedVehicleType = vehicleType;
+                    cachedClosestTerminalAddress = terminals[closestTerminalName].address;
+                    cachedDestinationName = destinationName;
+                    cachedRouteDistance = totalDistance;
+                    
+                    const mapsUrl = `https://www.google.com/maps/dir/${encodeURIComponent(cachedClosestTerminalAddress)}/${encodeURIComponent(cachedDestinationName)}`;
+                    mapsLink.href = mapsUrl;
 
-                    // Calculate and display main analysis results
-                    updateMainAnalysis(roundedBreakEvenPoint);
+                    updateAllCalculations();
                     
                     loadingDiv.style.display = 'none';
                     resultContentDiv.style.display = 'block';
@@ -535,83 +683,17 @@
                 }
             });
 
-            function updateMainAnalysis(lockerCount) {
-                const totalStopDurationMinutes = stopDuration * lockerCount;
-                const totalRouteDurationMinutes = (cachedRouteDuration * 2) + totalStopDurationMinutes;
-
-                closestTerminalSpan.textContent = cachedClosestTerminalName;
-                routeDistanceSpan.textContent = `${((cachedRouteDuration * 2) / 60 * 80).toFixed(2)} km`;
-                routeTimeSpan.textContent = `${(cachedRouteDuration * 2 / 60).toFixed(2)} tuntia (${(cachedRouteDuration * 2).toFixed(0)} minuuttia)`;
-                totalStopDurationSpan.textContent = `${(totalStopDurationMinutes / 60).toFixed(2)} tuntia (${totalStopDurationMinutes.toFixed(0)} minuuttia)`;
-                totalRouteDurationSpan.textContent = `${(totalRouteDurationMinutes / 60).toFixed(2)} tuntia (${totalRouteDurationMinutes.toFixed(0)} minuuttia)`;
-                fixedCostSpan.textContent = `${cachedCalculations.fixedDailyCost.toFixed(2)} €`;
-                netProfitPerLockerSpan.textContent = `${cachedCalculations.netProfitPerLocker.toFixed(2)} € / päivä`;
-                breakEvenPointSpan.textContent = `${Math.ceil(cachedCalculations.fixedDailyCost / cachedCalculations.netProfitPerLocker)} automaattia`;
-                breakEvenDetailsSpan.textContent = `(Tarkka luku oli ${ (cachedCalculations.fixedDailyCost / cachedCalculations.netProfitPerLocker).toFixed(2) })`;
-            }
-
-            // Päivitä erittely manuaalisen kentän perusteella
-            function updateBreakdown() {
-                if (!cachedCalculations) {
-                    detailedBreakdownDiv.style.display = 'none';
-                    return;
+            destinationInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    analyzeButton.click();
                 }
+            });
 
-                const manualLockerCount = parseFloat(manualLockerCountInput.value);
-                if (isNaN(manualLockerCount) || manualLockerCount <= 0) {
-                    detailedBreakdownDiv.style.display = 'none';
-                    return;
-                }
-                
-                // Update main analysis with the new manual locker count
-                updateMainAnalysis(manualLockerCount);
-
-                const { fixedDailyCost, fuelCost, wageCost, dailyLockerRent, stopWageCost, packagesPerLocker, netProfitPerLocker, hourlyRate } = cachedCalculations;
-                
-                // Käytetään manuaalista automaattimäärää laskennassa
-                const totalPackagesAtManualCount = manualLockerCount * packagesPerLocker;
-                
-                // Pakettimäärä
-                document.getElementById('totalPackagesAtBreakeven').textContent = `Pakettimäärä: ${totalPackagesAtManualCount.toFixed(0)} kpl / päivä`;
-
-                // Pakettikohtainen erittely
-                const incomePerPackageText = `Tulo per paketti: ${incomePerPackage.toFixed(2)} €`;
-                const variableCostPerPackageText = `Muuttuva kulu per paketti: ${variableCostPerPackage.toFixed(2)} €`;
-                
-                const fuelPerPackage = totalPackagesAtManualCount > 0 ? (fuelCost / totalPackagesAtManualCount) : 0;
-                const dailyLockerRentPerPackage = totalPackagesAtManualCount > 0 ? (dailyLockerRent * manualLockerCount / totalPackagesAtManualCount) : 0;
-                const totalStopWageCost = stopDuration * hourlyRate * manualLockerCount;
-                const compensationPerPackage = totalPackagesAtManualCount > 0 ? ((wageCost + totalStopWageCost) / totalPackagesAtManualCount) : 0;
-                const netProfitPerPackage = incomePerPackage - variableCostPerPackage - dailyLockerRentPerPackage - compensationPerPackage - fuelPerPackage;
-
-                document.getElementById('perPackageIncome').textContent = incomePerPackageText;
-                document.getElementById('perPackageVariableCost').textContent = variableCostPerPackageText;
-                document.getElementById('perPackageLockerRent').textContent = `Automaattivuokra per paketti: ${dailyLockerRentPerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageCompensation').textContent = `Kompensaatio (ajo ja pysähdys) per paketti: ${compensationPerPackage.toFixed(2)} €`;
-                document.getElementById('perPackageFuelCost').textContent = `Polttoainekustannus per paketti: ${fuelPerPackage.toFixed(2)} €`;
-
-                // Automaattikohtaiset kulut
-                document.getElementById('dailyVariableCostsBreakdown').textContent = `Muuttuvat kustannukset (per automaatti): ${(packagesPerLocker * variableCostPerPackage).toFixed(2)} €`;
-                document.getElementById('dailyLockerRentBreakdown').textContent = `Automaatin päivävuokra: ${dailyLockerRent.toFixed(2)} €`;
-                document.getElementById('stopWageCostBreakdown').textContent = `Kompensaatio (pysähdys, per automaatti): ${(stopDuration * hourlyRate).toFixed(2)} €`;
-                
-                // Reitin kiinteät kulut
-                document.getElementById('fuelCostBreakdown').textContent = `Polttoainekustannukset: ${fuelCost.toFixed(2)} €`;
-                document.getElementById('wageCostBreakdown').textContent = `Kompensaatio (ajo ja pysähdys): ${(wageCost + totalStopWageCost).toFixed(2)} €`;
-
-                // Nettotulos
-                const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;
-                
-                document.getElementById('netProfitPerPackageBreakdown').textContent = `Päivittäinen nettotulos per paketti: ${netProfitPerPackage.toFixed(2)} €`;
-                document.getElementById('netProfitPerLockerBreakdown').textContent = `Päivittäinen nettotulos per automaatti: ${netProfitPerLocker.toFixed(2)} €`;
-                document.getElementById('totalDailyNetProfitBreakdown').textContent = `Päivittäinen kokonaisnettotulos: ${totalDailyNetProfit.toFixed(2)} €`;
-
-                detailedBreakdownDiv.style.display = 'block';
-            }
-
-            detailsButton.addEventListener('click', updateBreakdown);
-            manualLockerCountInput.addEventListener('input', updateBreakdown);
-        });
+            document.addEventListener('DOMContentLoaded', () => {
+                // Initial update on page load
+                updateAllCalculations();
+            });
     </script>
 </body>
 </html>
+
