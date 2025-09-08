@@ -759,7 +759,7 @@
 <p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Reitin kiinteät kulut</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('fuelCostBreakdown').textContent = `${langData[currentLang].fuelCostBreakdown} ${fuelCost.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('wageCostBreakdown').textContent = `${langData[currentLang].wageCostBreakdown} ${(wageCost + totalStopWageCost).toFixed(2)} €`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('wageCostBreakdown').textContent = `${langData[currentLang].wageCostBreakdown} ${(wageCost).toFixed(2)} €`;</span></p>
 <p class="p2"><span class="s1"></span><br></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Nettotulos</span></p>
 <p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;</span></p>
