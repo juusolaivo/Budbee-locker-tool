@@ -1,902 +1,892 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <meta http-equiv="Content-Style-Type" content="text/css">
-  <title></title>
-  <meta name="Generator" content="Cocoa HTML Writer">
-  <meta name="CocoaVersion" content="2575.7">
-  <style type="text/css">
-    body {background-color: #f0f1f4}
-    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; -webkit-text-stroke: #000000}
-    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px 'Helvetica Neue'; -webkit-text-stroke: #000000; min-height: 15.0px}
-    span.s1 {font-kerning: none}
-  </style>
-</head>
-<body>
-<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
-<p class="p1"><span class="s1">&lt;html lang="fi"&gt;</span></p>
-<p class="p1"><span class="s1">&lt;head&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta charset="UTF-8"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;title&gt;Budbee-reittien kannattavuusanalyysi&lt;/title&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;style&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>body {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-family: 'Inter', sans-serif;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #f3f4f6;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.container {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>max-width: 800px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.bg-budbee-purple {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #5d2595;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.text-budbee-green {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: #5bb37d;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.loader {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 4px solid #f3f3f3;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-top: 4px solid #5d2595;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 30px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>animation: spin 1s linear infinite;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>@keyframes spin {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>0% { transform: rotate(0deg); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>100% { transform: rotate(360deg); }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#analyzeButton, #detailsButton, .link-button {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #5bb37d;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>color: white;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>text-decoration: none;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>display: inline-block;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>padding: 8px 16px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 8px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>font-weight: bold;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>#analyzeButton:hover, #detailsButton:hover, .link-button:hover {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>background-color: #4b8f67;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>transform: scale(1.05);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.language-toggle {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>position: absolute;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>top: 1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>right: 1rem;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>cursor: pointer;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>z-index: 100;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>.language-toggle img {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>width: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>height: 40px;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border-radius: 50%;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>border: 2px solid #fff;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/style&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
-<p class="p1"><span class="s1">&lt;body class="flex items-center justify-center min-h-screen p-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="language-toggle"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;img id="langToggle" src="https://flagcdn.com/gb.svg" alt="Switch to English"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="container bg-white p-8 rounded-xl shadow-lg border border-gray-200"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;header class="text-center mb-6"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;h1 id="mainHeading" class="text-4xl font-bold text-budbee-purple mb-2"&gt;Logistiikan Kannattavuusanalyysi&lt;/h1&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;p id="subHeading" class="text-lg text-gray-600"&gt;Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/header&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Input Section --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="mb-6 space-y-4"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label for="destinationInput" id="destinationLabel" class="block text-gray-700 font-semibold mb-2"&gt;Syötä kohdekaupunki:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="text" id="destinationInput" placeholder="Esim. Kokkola" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label for="ppldInput" id="ppldLabel" class="block text-gray-700 font-semibold mb-2"&gt;PPLD:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="ppldInput" value="10" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;label for="variableCostInput" id="variableCostLabel" class="block text-gray-700 font-semibold mb-2"&gt;Muuttuva kulu per paketti (€):&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;input type="number" id="variableCostInput" value="1.93" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;button id="analyzeButton" class="w-full font-bold py-3 px-4 rounded-lg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>Analysoi</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Result Section --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="results" class="bg-gray-100 p-6 rounded-lg border border-gray-200" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="loading" class="flex justify-center items-center py-8" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="loader"&gt;&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="resultContent" class="space-y-4" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h2 id="resultsHeading" class="text-2xl font-bold text-budbee-purple"&gt;Analyysin tulokset&lt;/h2&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="closestTerminalLabel" class="text-sm text-gray-500"&gt;Lähin terminaali:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="closestTerminal" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;!-- Manual Route Data Input --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm space-y-2"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;h3 id="manualHeading" class="font-semibold text-gray-700"&gt;Muokkaa reitin tietoja:&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label for="manualDistanceInput" id="manualDistanceLabel" class="block text-sm text-gray-500 mb-1"&gt;Matka (km) yhteensä:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="manualDistanceInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label for="manualHoursInput" id="manualHoursLabel" class="block text-sm text-gray-500 mb-1"&gt;Aika (tuntia) yhteensä:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="manualHoursInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;label for="manualMinutesInput" id="manualMinutesLabel" class="block text-sm text-gray-500 mb-1"&gt;Aika (minuuttia) yhteensä:&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;input type="number" id="manualMinutesInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="routeDistanceLabel" class="text-sm text-gray-500"&gt;Matka:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="routeDistance" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="routeTimeLabel" class="text-sm text-gray-500"&gt;Matkaan kuluva aika:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="routeTime" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="totalStopDurationLabel" class="text-sm text-gray-500"&gt;Pysähdysten kesto:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="totalStopDuration" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="totalRouteDurationLabel" class="text-sm text-gray-500"&gt;Reitin kokonaiskesto:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="totalRouteDuration" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="fixedCostLabel" class="text-sm text-gray-500"&gt;Reitin kiinteä päiväkustannus:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="fixedCost" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="netProfitPerLockerLabel" class="text-sm text-gray-500"&gt;Automaattikohtainen nettotuotto päivässä:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="netProfitPerLocker" class="text-lg font-semibold text-budbee-green"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="breakEvenPointLabel" class="text-sm text-gray-500"&gt;Kannattavuuspiste:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="breakEvenPoint" class="text-2xl font-bold text-budbee-purple"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="breakEvenDetails" class="text-sm text-gray-500"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="bg-white p-4 rounded-lg shadow-sm"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;label for="manualLockerCountInput" id="manualLockerCountLabel" class="block text-gray-700 font-semibold mb-2"&gt;Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):&lt;/label&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;input type="number" id="manualLockerCountInput" step="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button id="detailsButton" class="w-full mt-4 font-bold py-3 px-4 rounded-lg"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>Tarkka erittely</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;a id="mapsLink" href="#" target="_blank" class="w-full mt-4 link-button text-center"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>Avaa reitti Google Mapsissa</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/a&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">            </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="detailedBreakdown" class="bg-white p-6 mt-4 rounded-lg shadow-inner border border-gray-300" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3 id="detailedHeading" class="text-xl font-bold text-budbee-purple mb-4"&gt;Kulujen ja tuottojen tarkka erittely&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;div class="space-y-3"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="packageCountLabel" class="font-semibold text-lg text-gray-700"&gt;Pakettimäärä:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="list-disc list-inside space-y-1 text-sm text-gray-600"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="totalPackagesAtBreakeven"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="perPackageHeading" class="font-semibold text-lg text-gray-700"&gt;Pakettikohtainen erittely:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="list-disc list-inside space-y-1 text-sm text-gray-600"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="perPackageIncome"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="perPackageVariableCost"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="perPackageLockerRent"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="perPackageCompensation"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="perPackageFuelCost"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="perLockerHeading" class="font-semibold text-lg text-gray-700"&gt;Automaattikohtaiset kulut:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="list-disc list-inside space-y-1 text-sm text-gray-600"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="dailyVariableCostsBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="dailyLockerRentBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="stopWageCostBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="fixedCostsHeading" class="font-semibold text-lg text-gray-700"&gt;Reitin kiinteät kulut:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="list-disc list-inside space-y-1 text-sm text-gray-600"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="fuelCostBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="wageCostBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;p id="netResultHeading" class="font-semibold text-lg text-gray-700"&gt;Nettotulos:&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;ul class="list-disc list-inside space-y-1 text-sm text-gray-600"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="netProfitPerPackageBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>&lt;li id="totalDailyNetProfitBreakdown"&gt;&lt;/li&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>&lt;/ul&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div id="error" class="bg-red-100 text-red-700 p-4 rounded-lg border border-red-300" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="errorMessage"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- Custom Modal for Alerts --&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4" style="display: none;"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center border-t-4 border-budbee-green"&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-2"&gt;&lt;/h3&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;p id="modalMessage" class="text-sm text-gray-600 mb-4"&gt;&lt;/p&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;button id="modalCloseButton" class="bg-budbee-green text-white px-6 py-2 rounded-lg hover:bg-budbee-purple transition"&gt;Sulje&lt;/button&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;script&gt;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const langData = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'fi': {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appTitle: 'Budbee-reittien kannattavuusanalyysi',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>mainHeading: 'Logistiikan Kannattavuusanalyysi',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>subHeading: 'Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>destinationLabel: 'Syötä kohdekaupunki:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>destinationPlaceholder: 'Esim. Kokkola',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>ppldLabel: 'PPLD:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>variableCostLabel: 'Muuttuva kulu per paketti (€):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>analyzeButton: 'Analysoi',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>resultsHeading: 'Analyysin tulokset',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>closestTerminalLabel: 'Lähin terminaali:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualHeading: 'Muokkaa reitin tietoja:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualDistanceLabel: 'Matka (km) yhteensä:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualHoursLabel: 'Aika (tuntia) yhteensä:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualMinutesLabel: 'Aika (minuuttia) yhteensä:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeDistanceLabel: 'Matka:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeTimeLabel: 'Matkaan kuluva aika:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalStopDurationLabel: 'Pysähdysten kesto:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalRouteDurationLabel: 'Reitin kokonaiskesto:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fixedCostLabel: 'Reitin kiinteä päiväkustannus:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netProfitPerLockerLabel: 'Automaattikohtainen nettotuotto päivässä:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>breakEvenPointLabel: 'Kannattavuuspiste:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualLockerCountLabel: "Muokkaa automaattimäärää (paina uudelleen 'Tarkka erittely'):",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailsButton: 'Tarkka erittely',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>mapsLink: 'Avaa reitti Google Mapsissa',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailedHeading: 'Kulujen ja tuottojen tarkka erittely',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>packageCountLabel: 'Pakettimäärä:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageHeading: 'Pakettikohtainen erittely:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perLockerHeading: 'Automaattikohtaiset kulut:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fixedCostsHeading: 'Reitin kiinteät kulut:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netResultHeading: 'Nettotulos:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageIncome: 'Tulo per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageVariableCost: 'Muuttuva kulu per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageLockerRent: 'Automaattivuokra per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageCompensation: 'Kompensaatio (ajo ja pysähdys) per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageFuelCost: 'Polttoainekustannus per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>dailyVariableCostsBreakdown: 'Muuttuvat kustannukset (per automaatti):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>dailyLockerRentBreakdown: 'Automaatin päivävuokra:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>stopWageCostBreakdown: 'Kompensaatio (pysähdys, per automaatti):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fuelCostBreakdown: 'Polttoainekustannukset:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>wageCostBreakdown: 'Kompensaatio (ajo ja pysähdys):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netProfitPerPackageBreakdown: 'Päivittäinen nettotulos per paketti:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalDailyNetProfitBreakdown: 'Päivittäinen kokonaisnettotulos:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalErrorTitle: 'Virhe',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalErrorMessage: 'Syötä kelvollinen automaattimäärä.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>noRouteFound: (city) =&gt; `Paikkakuntaa "${city}" ei löydy. Tarkista kirjoitusasu.`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>noProfit: 'Negatiivinen nettotuotto, reitti ei ole kannattava millään automaattimäärällä.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalClose: 'Sulje'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>},</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'en': {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>appTitle: 'Budbee Route Profitability Analysis',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>mainHeading: 'Logistics Profitability Analysis',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>subHeading: 'Calculate how many lockers are needed for a new route to be profitable.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>destinationLabel: 'Enter destination city:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>destinationPlaceholder: 'E.g. Kokkola',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>ppldLabel: 'PPLD:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>variableCostLabel: 'Variable cost per package (€):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>analyzeButton: 'Analyze',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>resultsHeading: 'Analysis Results',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>closestTerminalLabel: 'Closest terminal:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualHeading: 'Edit route data:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualDistanceLabel: 'Total distance (km):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualHoursLabel: 'Total time (hours):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualMinutesLabel: 'Total time (minutes):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeDistanceLabel: 'Distance:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeTimeLabel: 'Driving time:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalStopDurationLabel: 'Stop duration:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalRouteDurationLabel: 'Total route duration:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fixedCostLabel: 'Fixed daily route cost:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netProfitPerLockerLabel: 'Net profit per locker per day:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>breakEvenPointLabel: 'Breakeven point:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>manualLockerCountLabel: "Edit number of lockers (press 'Detailed breakdown' again):",</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailsButton: 'Detailed breakdown',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>mapsLink: 'Open route in Google Maps',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailedHeading: 'Detailed breakdown of costs and revenue',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>packageCountLabel: 'Package count:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageHeading: 'Per package breakdown:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perLockerHeading: 'Per locker costs:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fixedCostsHeading: 'Fixed route costs:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netResultHeading: 'Net result:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageIncome: 'Revenue per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageVariableCost: 'Variable cost per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageLockerRent: 'Locker rent per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageCompensation: 'Compensation (driving and stops) per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>perPackageFuelCost: 'Fuel cost per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>dailyVariableCostsBreakdown: 'Variable costs (per locker):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>dailyLockerRentBreakdown: 'Daily locker rent:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>stopWageCostBreakdown: 'Compensation (stops, per locker):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fuelCostBreakdown: 'Fuel costs:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>wageCostBreakdown: 'Compensation (driving and stops):',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netProfitPerPackageBreakdown: 'Daily net profit per package:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalDailyNetProfitBreakdown: 'Total daily net profit:',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalErrorTitle: 'Error',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalErrorMessage: 'Please enter a valid number of lockers.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>noRouteFound: (city) =&gt; `Could not find a location for "${city}". Please check spelling.`,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>noProfit: 'Negative net profit, the route is not profitable with any number of lockers.',</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>modalClose: 'Close'</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let currentLang = 'fi';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const langToggle = document.getElementById('langToggle');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function updateLanguage(lang) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>currentLang = lang;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const texts = langData[lang];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.title = texts.appTitle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('mainHeading').textContent = texts.mainHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('subHeading').textContent = texts.subHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('destinationLabel').textContent = texts.destinationLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('destinationInput').placeholder = texts.destinationPlaceholder;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('ppldLabel').textContent = texts.ppldLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('variableCostLabel').textContent = texts.variableCostLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('analyzeButton').textContent = texts.analyzeButton;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('resultsHeading').textContent = texts.resultsHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('closestTerminalLabel').textContent = texts.closestTerminalLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('manualHeading').textContent = texts.manualHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('manualDistanceLabel').textContent = texts.manualDistanceLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('manualHoursLabel').textContent = texts.manualHoursLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('manualMinutesLabel').textContent = texts.manualMinutesLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('routeDistanceLabel').textContent = texts.routeDistanceLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('routeTimeLabel').textContent = texts.routeTimeLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('totalStopDurationLabel').textContent = texts.totalStopDurationLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('totalRouteDurationLabel').textContent = texts.totalRouteDurationLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('fixedCostLabel').textContent = texts.fixedCostLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('netProfitPerLockerLabel').textContent = texts.netProfitPerLockerLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('breakEvenPointLabel').textContent = texts.breakEvenPointLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('manualLockerCountLabel').textContent = texts.manualLockerCountLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('detailsButton').textContent = texts.detailsButton;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('mapsLink').textContent = texts.mapsLink;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('detailedHeading').textContent = texts.detailedHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('packageCountLabel').textContent = texts.packageCountLabel;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageHeading').textContent = texts.perPackageHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perLockerHeading').textContent = texts.perLockerHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('fixedCostsHeading').textContent = texts.fixedCostsHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('netResultHeading').textContent = texts.netResultHeading;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageIncome').textContent = texts.perPackageIncome;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageVariableCost').textContent = texts.perPackageVariableCost;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageLockerRent').textContent = texts.perPackageLockerRent;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageCompensation').textContent = texts.perPackageCompensation;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('perPackageFuelCost').textContent = texts.perPackageFuelCost;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('dailyVariableCostsBreakdown').textContent = texts.dailyVariableCostsBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('dailyLockerRentBreakdown').textContent = texts.dailyLockerRentBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('stopWageCostBreakdown').textContent = texts.stopWageCostBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('fuelCostBreakdown').textContent = texts.fuelCostBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('wageCostBreakdown').textContent = texts.wageCostBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('netProfitPerPackageBreakdown').textContent = texts.netProfitPerPackageBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('totalDailyNetProfitBreakdown').textContent = texts.totalDailyNetProfitBreakdown;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('modalTitle').textContent = texts.modalErrorTitle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('modalMessage').textContent = texts.modalErrorMessage;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.getElementById('modalCloseButton').textContent = texts.modalClose;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>langToggle.src = lang === 'fi' ? 'https://flagcdn.com/gb.svg' : 'https://flagcdn.com/fi.svg';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>langToggle.alt = lang === 'fi' ? 'Switch to English' : 'Vaihda suomeksi';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>langToggle.addEventListener('click', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const newLang = currentLang === 'fi' ? 'en' : 'fi';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>updateLanguage(newLang);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>if (cachedCalculations) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>updateAllCalculations();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const destinationInput = document.getElementById('destinationInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ppldInput = document.getElementById('ppldInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const variableCostInput = document.getElementById('variableCostInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const manualLockerCountInput = document.getElementById('manualLockerCountInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const manualDistanceInput = document.getElementById('manualDistanceInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const manualHoursInput = document.getElementById('manualHoursInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const manualMinutesInput = document.getElementById('manualMinutesInput');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const analyzeButton = document.getElementById('analyzeButton');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const detailsButton = document.getElementById('detailsButton');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const detailedBreakdownDiv = document.getElementById('detailedBreakdown');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const mapsLink = document.getElementById('mapsLink');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const resultsDiv = document.getElementById('results');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const loadingDiv = document.getElementById('loading');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const resultContentDiv = document.getElementById('resultContent');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const errorDiv = document.getElementById('error');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const errorMessageSpan = document.getElementById('errorMessage');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const closestTerminalSpan = document.getElementById('closestTerminal');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const routeDistanceSpan = document.getElementById('routeDistance');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const routeTimeSpan = document.getElementById('routeTime');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const totalStopDurationSpan = document.getElementById('totalStopDuration');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const totalRouteDurationSpan = document.getElementById('totalRouteDuration');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const fixedCostSpan = document.getElementById('fixedCost');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const netProfitPerLockerSpan = document.getElementById('netProfitPerLocker');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const breakEvenPointSpan = document.getElementById('breakEvenPoint');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const breakEvenDetailsSpan = document.getElementById('breakEvenDetails');</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const modal = document.getElementById('modal');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const modalTitle = document.getElementById('modalTitle');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const modalMessage = document.getElementById('modalMessage');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const modalCloseButton = document.getElementById('modalCloseButton');</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedCalculations = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedRouteDuration = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedClosestTerminalName = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedVehicleType = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedRouteDistance = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedClosestTerminalAddress = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let cachedDestinationName = null;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function showModal(title, message) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>modalTitle.textContent = title;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>modalMessage.textContent = message;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>modal.style.display = 'flex';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>modalCloseButton.addEventListener('click', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>modal.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const terminals = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vantaa': { lat: 60.290314, lon: 24.96513, address: 'Tammiston Kauppatie 11 B, 01510 Vantaa', vehicle: 'pullis' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Jyväskylä': { lat: 62.242637, lon: 25.747355, address: 'Kuormaajantie 6 / Suluntie, 40320 Jyväskylä', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kuopio': { lat: 62.905646, lon: 27.683674, address: 'Kisällinkatu 5, 70780 Kuopio', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lahti': { lat: 60.98595, lon: 25.64253, address: 'Vuoripojankatu 16, 15210 Lahti', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Oulu': { lat: 65.01168, lon: 25.47167, address: 'Graniittitie 6, 90550 Oulu', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere': { lat: 61.4981, lon: 23.7606, address: 'Kytömaankatu 11, Tampere 33720', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku': { lat: 60.4518, lon: 22.2666, address: 'Länsi-Avantintie 8, 21420 Turku', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Joensuu': { lat: 62.6006, lon: 29.7634, address: 'Wahlforssinkatu 9 A, 80100 Joensuu', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vaasa': { lat: 63.0954, lon: 21.6163, address: 'Konttoritie 12, 65610 Vaasa', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Pori': { lat: 61.4862, lon: 21.795, address: 'Karjalankatu 11, 28130 Pori', vehicle: 'pakettiauto' },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lappeenranta': { lat: 61.0594, lon: 28.1873, address: 'Ratakatu 41, 53100 Lappeenranta', vehicle: 'pakettiauto' }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const incomePerPackage = 3.57; // €</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const dailyLockerRent = 5.24; // €</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const stopDuration = 6.49; // minuuttia</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const fuelPrice = 1.85; // €/l</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const vehicleCosts = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'pullis': { hourly: 32.33, fuelConsumption: 13 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'pakettiauto': { hourly: 28.34, fuelConsumption: 8 }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const routeData = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Oulu-Tornio': { distance: 120, duration: 90 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Oulu-Kemi': { distance: 105, duration: 75 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vaasa-Kokkola': { distance: 121, duration: 90 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vaasa-Seinäjoki': { distance: 78, duration: 60 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Oulu-Rovaniemi': { distance: 220, duration: 165 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vantaa-Hämeenlinna': { distance: 98, duration: 75 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere-Hämeenlinna': { distance: 75, duration: 60 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kuopio-Rovaniemi': { distance: 580, duration: 420 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku-Salo': { distance: 52, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vantaa-Salo': { distance: 120, duration: 85 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Pori-Rauma': { distance: 50, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku-Rauma': { distance: 90, duration: 65 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Jyväskylä-Savonlinna': { distance: 190, duration: 150 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lappeenranta-Savonlinna': { distance: 140, duration: 120 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere-Kangasala': { distance: 16, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vantaa-Kerava': { distance: 22, duration: 30 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Helsinki-Espoo': { distance: 17, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Helsinki-Vantaa': { distance: 20, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Oulu-Kempele': { distance: 15, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere-Pirkkala': { distance: 15, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku-Kaarina': { distance: 10, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Jyväskylä-Muurame': { distance: 16, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lahti-Hollola': { distance: 10, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kuopio-Siilinjärvi': { distance: 25, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Joensuu-Liperi': { distance: 20, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vaasa-Mustasaari': { distance: 10, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Pori-Ulvila': { distance: 10, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lappeenranta-Imatra': { distance: 35, duration: 35 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku-Naantali': { distance: 15, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Turku-Raisio': { distance: 10, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere-Ylöjärvi': { distance: 15, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tampere-Nokia': { distance: 15, duration: 20 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Jyväskylä-Laukaa': { distance: 25, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lahti-Orimattila': { distance: 25, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Vantaa-Tuusula': { distance: 20, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kontiolahd': { distance: 20, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Ii': { distance: 35, duration: 30 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lemi': { distance: 25, duration: 25 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Maalahti': { distance: 25, duration: 30 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Harjavalta': { distance: 30, duration: 30 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Iisalmi': { distance: 85, duration: 70 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kotka': { distance: 120, duration: 90 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kitee': { distance: 60, duration: 50 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Forssa': { distance: 55, duration: 45 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Somero': { distance: 40, duration: 35 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Ilmajoki': { distance: 15, duration: 15 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Mikkeli': { distance: 100, duration: 90 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kankaanpää': { distance: 50, duration: 45 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Suonenjoki': { distance: 50, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Sastamala': { distance: 50, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Uusikaupunki': { distance: 70, duration: 60 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kristiinankaupunki': { distance: 95, duration: 75 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kemi': { distance: 100, duration: 75 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Lieksa': { distance: 95, duration: 80 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kouvola': { distance: 60, duration: 50 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Hamina': { distance: 90, duration: 70 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Salo': { distance: 52, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Rauma': { distance: 50, duration: 40 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Valkeakoski': { distance: 35, duration: 35 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Säkylä': { distance: 65, duration: 60 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Heinola': { distance: 35, duration: 30 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Eura': { distance: 40, duration: 35 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Jämsä': { distance: 60, duration: 50 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Kuusamo': { distance: 215, duration: 165 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Tornio': { distance: 120, duration: 90 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>'Uusikaarlepyy': { distance: 75, duration: 60 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function getRouteData(origin, destination) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const key = `${origin}-${destination}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const reverseKey = `${destination}-${origin}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return new Promise(resolve =&gt; setTimeout(() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (routeData[key]) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resolve({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>distance: routeData[key].distance,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>duration: routeData[key].duration</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else if (routeData[reverseKey]) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resolve({</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>distance: routeData[reverseKey].distance,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>duration: routeData[reverseKey].duration</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resolve(null);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}, 1000));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>function haversineDistance(lat1, lon1, lat2, lon2) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const R = 6371;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const dLat = (lat2 - lat1) * Math.PI / 180;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const dLon = (lon2 - lon1) * Math.PI / 180;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                      </span>Math.sin(dLon / 2) * Math.sin(dLon / 2);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>return R * c;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>async function getCityCoordinates(cityName) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>const cityCoordinates = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Helsinki': { lat: 60.1695, lon: 24.9354 }, 'Espoo': { lat: 60.2055, lon: 24.6559 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Tampere': { lat: 61.4991, lon: 23.7871 }, 'Vantaa': { lat: 60.2931, lon: 25.0401 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Oulu': { lat: 65.0123, lon: 25.4682 }, 'Turku': { lat: 60.4518, lon: 22.2666 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Jyväskylä': { lat: 62.2426, lon: 25.7473 }, 'Kuopio': { lat: 62.8924, lon: 27.6775 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Lahti': { lat: 60.9858, lon: 25.6559 }, 'Pori': { lat: 61.4862, lon: 21.7950 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Joensuu': { lat: 62.6006, lon: 29.7634 }, 'Vaasa': { lat: 63.0954, lon: 21.6163 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Lappeenranta': { lat: 61.0594, lon: 28.1873 }, 'Kokkola': { lat: 63.8385, lon: 23.1309 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kouvola': { lat: 60.8667, lon: 26.7083 }, 'Rovaniemi': { lat: 66.5039, lon: 25.7294 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Hämeenlinna': { lat: 60.9942, lon: 24.4646 }, 'Seinäjoki': { lat: 62.7931, lon: 22.8407 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Mikkeli': { lat: 61.6872, lon: 27.7056 }, 'Salo': { lat: 60.3789, lon: 23.1344 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kotka': { lat: 60.4650, lon: 26.9450 }, 'Porvoo': { lat: 60.3958, lon: 25.6657 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Hyvinkää': { lat: 60.6300, lon: 24.8569 }, 'Lohja': { lat: 60.2500, lon: 24.0667 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Järvenpää': { lat: 60.4700, lon: 25.0800 }, 'Tornio': { lat: 65.8454, lon: 24.1457 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Savonlinna': { lat: 61.8687, lon: 28.8778 }, 'Riihimäki': { lat: 60.7410, lon: 24.7735 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Iisalmi': { lat: 63.5601, lon: 27.1895 }, 'Varkaus': { lat: 62.3150, lon: 27.8732 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Rauma': { lat: 61.1293, lon: 21.5170 }, 'Sastamala': { lat: 61.3414, lon: 22.9099 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Ylöjärvi': { lat: 61.5544, lon: 23.5936 }, 'Kangasala': { lat: 61.4651, lon: 24.0621 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Nokia': { lat: 61.4776, lon: 23.4988 }, 'Pirkkala': { lat: 61.4429, lon: 23.6366 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kaarina': { lat: 60.4079, lon: 22.3687 }, 'Raisio': { lat: 60.4801, lon: 21.7042 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Naantali': { lat: 60.4674, lon: 22.0298 }, 'Uusikaupunki': { lat: 60.8000, lon: 21.4000 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Forssa': { lat: 60.8143, lon: 23.6265 }, 'Kristiinankaupunki': { lat: 62.2709, lon: 21.3789 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Pietarsaari': { lat: 63.6766, lon: 22.7040 }, 'Kokemäki': { lat: 61.2583, lon: 22.3418 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Imatra': { lat: 61.1833, lon: 28.7667 }, 'Nurmijärvi': { lat: 60.4658, lon: 24.7891 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Tuusula': { lat: 60.4093, lon: 25.0210 }, 'Kerava': { lat: 60.4026, lon: 25.0931 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kirkkonummi': { lat: 60.1258, lon: 24.4363 }, 'Vihti': { lat: 60.4206, lon: 24.3218 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Sipoo': { lat: 60.3700, lon: 25.2600 }, 'Kuusamo': { lat: 65.9667, lon: 29.1833 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kempele': { lat: 64.9084, lon: 25.5034 }, 'Iitti': { lat: 60.8950, lon: 26.3400 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Keminmaa': { lat: 65.7950, lon: 24.5422 }, 'Lempäälä': { lat: 61.3146, lon: 23.7547 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Mäntsälä': { lat: 60.6389, lon: 25.3218 }, 'Orimattila': { lat: 60.7909, lon: 25.7196 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Jämsä': { lat: 61.8696, lon: 25.2891 }, 'Siilinjärvi': { lat: 63.0805, lon: 27.6521 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Liperi': { lat: 62.5312, lon: 29.5085 }, 'Lieksa': { lat: 63.3167, lon: 30.0167 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kite': { lat: 62.0911, lon: 30.1408 }, 'Hamina': { lat: 60.5700, lon: 27.1100 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Karkkila': { lat: 60.5361, lon: 24.2185 }, 'Orivesi': { lat: 61.6700, lon: 24.3600 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Harjavalta': { lat: 61.3094, lon: 22.1481 }, 'Ulvila': { lat: 61.4398, lon: 21.8906 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Laukaa': { lat: 62.4045, lon: 25.9615 }, 'Muurame': { lat: 62.1332, lon: 25.7402 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Lempäälä': { lat: 61.3146, lon: 23.7547 }, 'Keuruu': { lat: 62.2612, lon: 24.7214 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Säkylä': { lat: 60.8996, lon: 22.3421 }, 'Eura': { lat: 61.1345, lon: 22.3212 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kankaanpää': { lat: 61.7850, lon: 22.4000 }, 'Ilmajoki': { lat: 62.7291, lon: 22.5694 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Mustasaari': { lat: 63.1026, lon: 21.6841 }, 'Maalahti': { lat: 62.9691, lon: 21.5794 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kemi': { lat: 65.7728, lon: 24.5661 }, 'Ii': { lat: 65.3400, lon: 25.3700 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Pyhäjoki': { lat: 64.4600, lon: 24.2500 }, 'Kalajoki': { lat: 64.2500, lon: 23.9500 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kannus': { lat: 63.9000, lon: 23.9000 }, 'Suonenjoki': { lat: 62.6247, lon: 27.1894 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kangasniemi': { lat: 61.9800, lon: 26.6300 }, 'Mäntyharju': { lat: 61.1700, lon: 26.8300 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Heinola': { lat: 61.2000, lon: 26.0500 }, 'Nivala': { lat: 63.9200, lon: 24.9600 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Haapajärvi': { lat: 63.7500, lon: 25.3300 }, 'Pieksämäki': { lat: 62.3000, lon: 27.5100 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Keuruu': { lat: 62.2612, lon: 24.7214 }, 'Viitasaari': { lat: 63.0700, lon: 25.8600 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Kajaani': { lat: 64.2250, lon: 27.7300 }, 'Kuusankoski': { lat: 60.9000, lon: 26.2500 },</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>'Närpiö': { lat: 62.4700, lon: 21.8000 }, 'Sodankylä': { lat: 67.4100, lon: 26.6000 }</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>return new Promise(resolve =&gt; setTimeout(() =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const normalizedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (cityCoordinates[normalizedCityName]) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>resolve(cityCoordinates[normalizedCityName]);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>resolve(null);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}, 500));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Function to update all displayed values based on the current state</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>function updateAllCalculations() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!cachedCalculations) return;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let totalDurationMinutes = cachedRouteDuration;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let totalDistance = cachedRouteDistance;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const manualDistance = parseFloat(manualDistanceInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const manualHours = parseFloat(manualHoursInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const manualMinutes = parseFloat(manualMinutesInput.value);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!isNaN(manualDistance) &amp;&amp; manualDistance &gt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>totalDistance = manualDistance;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!isNaN(manualHours) &amp;&amp; manualHours &gt;= 0 &amp;&amp; !isNaN(manualMinutes) &amp;&amp; manualMinutes &gt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>totalDurationMinutes = (manualHours * 60) + manualMinutes;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else if (!isNaN(manualHours) &amp;&amp; manualHours &gt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>totalDurationMinutes = manualHours * 60;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} else if (!isNaN(manualMinutes) &amp;&amp; manualMinutes &gt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>totalDurationMinutes = manualMinutes;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalDurationHours = totalDurationMinutes / 60;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const vehicle = vehicleCosts[cachedVehicleType];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const wageCost = totalDurationHours * vehicle.hourly;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const newFixedDailyCost = fuelCost + wageCost;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const netProfitPerLocker = cachedCalculations.netProfitPerLocker;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const breakEvenPoint = newFixedDailyCost / netProfitPerLocker;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const lockerCount = manualLockerCountInput.value ? parseFloat(manualLockerCountInput.value) : roundedBreakEvenPoint;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalStopDurationMinutes = stopDuration * lockerCount;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalRouteDurationMinutes = totalDurationMinutes + totalStopDurationMinutes;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Format time as "X tuntia Y minuuttia"</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const formatTime = (totalMinutes) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const hours = Math.floor(totalMinutes / 60);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const minutes = Math.round(totalMinutes % 60);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const lang = currentLang;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (lang === 'fi') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>return `${hours} tuntia ${minutes} minuuttia`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>} else {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>return `${hours} hours ${minutes} minutes`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>};</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Update main analysis results</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>closestTerminalSpan.textContent = cachedClosestTerminalName;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeDistanceSpan.textContent = `${totalDistance.toFixed(0)} km`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>routeTimeSpan.textContent = formatTime(totalDurationMinutes);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalStopDurationSpan.textContent = formatTime(totalStopDurationMinutes);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>totalRouteDurationSpan.textContent = formatTime(totalRouteDurationMinutes);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>fixedCostSpan.textContent = `${newFixedDailyCost.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>netProfitPerLockerSpan.textContent = `${netProfitPerLocker.toFixed(2)} € / päivä`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>breakEvenPointSpan.textContent = `${roundedBreakEvenPoint} ${currentLang === 'fi' ? 'automaattia' : 'lockers'}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>breakEvenDetailsSpan.textContent = `(${currentLang === 'fi' ? 'Tarkka luku oli' : 'Exact number was'} ${breakEvenPoint.toFixed(2)})`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Update detailed breakdown if it's visible</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (detailedBreakdownDiv.style.display !== 'none') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>updateBreakdown();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>// Päivitä erittely manuaalisen kentän perusteella</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>function updateBreakdown() {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!cachedCalculations) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>detailedBreakdownDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const manualLockerCount = parseFloat(manualLockerCountInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (isNaN(manualLockerCount) || manualLockerCount &lt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>detailedBreakdownDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const packagesPerLocker = parseFloat(ppldInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const variableCostPerPackage = parseFloat(variableCostInput.value);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let routeDistance = parseFloat(manualDistanceInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>let routeDurationMinutes = (parseFloat(manualHoursInput.value) * 60) + parseFloat(manualMinutesInput.value);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const vehicle = vehicleCosts[cachedVehicleType];</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const fuelCost = (routeDistance / 100) * vehicle.fuelConsumption * fuelPrice;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const wageCost = (routeDurationMinutes / 60) * vehicle.hourly;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const fixedDailyCost = fuelCost + wageCost;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalPackagesAtManualCount = manualLockerCount * packagesPerLocker;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const pluralPackages = totalPackagesAtManualCount === 1 ? (currentLang === 'fi' ? 'paketti' : 'package') : (currentLang === 'fi' ? 'pakettia' : 'packages');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('totalPackagesAtBreakeven').textContent = `${langData[currentLang].packageCountLabel.replace(':', '')}: ${totalPackagesAtManualCount.toFixed(0)} ${pluralPackages} / ${currentLang === 'fi' ? 'päivä' : 'day'}`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Pakettikohtainen erittely</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const hourlyRate = vehicle.hourly / 60;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalStopWageCost = stopDuration * hourlyRate * manualLockerCount;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const compensationPerPackage = totalPackagesAtManualCount &gt; 0 ? ((wageCost + totalStopWageCost) / totalPackagesAtManualCount) : 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const dailyLockerRentPerPackage = totalPackagesAtManualCount &gt; 0 ? (dailyLockerRent * manualLockerCount / totalPackagesAtManualCount) : 0;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const fuelPerPackage = totalPackagesAtManualCount &gt; 0 ? (fuelCost / totalPackagesAtManualCount) : 0;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const netProfitPerPackage = incomePerPackage - variableCostPerPackage - dailyLockerRentPerPackage - compensationPerPackage - fuelPerPackage;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Recalculate net profit per locker based on the new variable cost</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const dailyIncome = packagesPerLocker * incomePerPackage;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const stopWageCostPerLocker = stopDuration * hourlyRate;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCostPerLocker;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('perPackageIncome').textContent = `${langData[currentLang].perPackageIncome} ${incomePerPackage.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('perPackageVariableCost').textContent = `${langData[currentLang].perPackageVariableCost} ${variableCostPerPackage.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('perPackageLockerRent').textContent = `${langData[currentLang].perPackageLockerRent} ${dailyLockerRentPerPackage.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('perPackageCompensation').textContent = `${langData[currentLang].perPackageCompensation} ${compensationPerPackage.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('perPackageFuelCost').textContent = `${langData[currentLang].perPackageFuelCost} ${fuelPerPackage.toFixed(2)} €`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Automaattikohtaiset kulut</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('dailyVariableCostsBreakdown').textContent = `${langData[currentLang].dailyVariableCostsBreakdown} ${dailyVariableCosts.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('dailyLockerRentBreakdown').textContent = `${langData[currentLang].dailyLockerRentBreakdown} ${dailyLockerRent.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('stopWageCostBreakdown').textContent = `${langData[currentLang].stopWageCostBreakdown} ${stopWageCostPerLocker.toFixed(2)} €`;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Reitin kiinteät kulut</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('fuelCostBreakdown').textContent = `${langData[currentLang].fuelCostBreakdown} ${fuelCost.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('wageCostBreakdown').textContent = `${langData[currentLang].wageCostBreakdown} ${(wageCost).toFixed(2)} €`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Nettotulos</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('netProfitPerPackageBreakdown').textContent = `${langData[currentLang].netProfitPerPackageBreakdown} ${netProfitPerPackage.toFixed(2)} €`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>document.getElementById('totalDailyNetProfitBreakdown').textContent = `${langData[currentLang].totalDailyNetProfitBreakdown} ${totalDailyNetProfit.toFixed(2)} €`;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailedBreakdownDiv.style.display = 'block';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>}</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>manualLockerCountInput.addEventListener('input', updateAllCalculations);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>manualDistanceInput.addEventListener('input', updateAllCalculations);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>manualHoursInput.addEventListener('input', updateAllCalculations);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>manualMinutesInput.addEventListener('input', updateAllCalculations);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>detailsButton.addEventListener('click', updateBreakdown);</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">        </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>analyzeButton.addEventListener('click', async () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const destinationName = destinationInput.value.trim();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const packagesPerLocker = parseFloat(ppldInput.value);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>const variableCostPerPackage = parseFloat(variableCostInput.value);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (!destinationName) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>showModal(langData[currentLang].modalErrorTitle, langData[currentLang].noRouteFound(destinationName));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (isNaN(packagesPerLocker) || packagesPerLocker &lt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>return;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>resultsDiv.style.display = 'block';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>loadingDiv.style.display = 'flex';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>resultContentDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>errorDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>detailedBreakdownDiv.style.display = 'none';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>try {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const destinationCoords = await getCityCoordinates(destinationName);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (!destinationCoords) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>throw new Error(langData[currentLang].noRouteFound(destinationName));</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>let closestTerminalName = null;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>let shortestDistance = Infinity;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>for (const terminalName in terminals) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>const dist = haversineDistance(</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>terminals[terminalName].lat,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>terminals[terminalName].lon,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>destinationCoords.lat,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>destinationCoords.lon</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>if (dist &lt; shortestDistance) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>shortestDistance = dist;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                            </span>closestTerminalName = terminalName;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const routeDataResult = await getRouteData(closestTerminalName, destinationName);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const routeDistance = routeDataResult ? routeDataResult.distance : shortestDistance;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const routeDuration = routeDataResult ? routeDataResult.duration : (shortestDistance / 80) * 60;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const vehicleType = terminals[closestTerminalName].vehicle;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const vehicle = vehicleCosts[vehicleType];</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const totalDistance = routeDistance * 2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const totalDurationMinutes = routeDuration * 2;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const totalDurationHours = totalDurationMinutes / 60;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const wageCost = totalDurationHours * vehicle.hourly;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const hourlyRate = vehicle.hourly / 60;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const dailyIncome = packagesPerLocker * incomePerPackage;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const stopWageCost = stopDuration * hourlyRate;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCost;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const fixedDailyCost = fuelCost + wageCost;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>if (netProfitPerLocker &lt;= 0) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>throw new Error(langData[currentLang].noProfit);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>}</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const breakEvenPoint = fixedDailyCost / netProfitPerLocker;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>manualLockerCountInput.value = roundedBreakEvenPoint;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>manualDistanceInput.value = totalDistance.toFixed(0);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>manualHoursInput.value = Math.floor(totalDurationMinutes / 60);</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>manualMinutesInput.value = Math.round(totalDurationMinutes % 60);</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedCalculations = {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>fixedDailyCost: fixedDailyCost,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>fuelCost: fuelCost,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>wageCost: wageCost,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>dailyVariableCosts: dailyVariableCosts,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>dailyLockerRent: dailyLockerRent,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>stopWageCost: stopWageCost,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>netProfitPerLocker: netProfitPerLocker,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>packagesPerLocker: packagesPerLocker,</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                        </span>hourlyRate: hourlyRate</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>};</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedRouteDuration = totalDurationMinutes;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedClosestTerminalName = closestTerminalName;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedVehicleType = vehicleType;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedClosestTerminalAddress = terminals[closestTerminalName].address;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedDestinationName = destinationName;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>cachedRouteDistance = totalDistance;</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>const mapsUrl = `https://www.google.com/maps/dir/${encodeURIComponent(cachedClosestTerminalAddress)}/${encodeURIComponent(cachedDestinationName)}/${encodeURIComponent(cachedClosestTerminalAddress)}`;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>mapsLink.href = mapsUrl;</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>updateAllCalculations();</span></p>
-<p class="p2"><span class="s1"><span class="Apple-converted-space">                    </span></span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>loadingDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>resultContentDiv.style.display = 'block';</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>} catch (error) {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>loadingDiv.style.display = 'none';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>errorDiv.style.display = 'block';</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>errorMessageSpan.textContent = error.message;</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>destinationInput.addEventListener('keydown', (event) =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>if (event.key === 'Enter') {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                    </span>analyzeButton.click();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>}</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p2"><span class="s1"></span><br></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>document.addEventListener('DOMContentLoaded', () =&gt; {</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>// Initial update on page load</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>updateLanguage('fi');</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>updateAllCalculations();</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>});</span></p>
-<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/script&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
-<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
-</body>
-</html>
+{\rtf1\ansi\ansicpg1252\cocoartf2822
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs24 \cf0 <!DOCTYPE html>\
+<html lang="fi">\
+<head>\
+    <meta charset="UTF-8">\
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
+    <title>Budbee-reittien kannattavuusanalyysi</title>\
+    <script src="https://cdn.tailwindcss.com"></script>\
+    <style>\
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');\
+        body \{\
+            font-family: 'Inter', sans-serif;\
+            background-color: #f3f4f6;\
+        \}\
+        .container \{\
+            max-width: 800px;\
+        \}\
+        .bg-budbee-purple \{\
+            background-color: #5d2595;\
+        \}\
+        .text-budbee-green \{\
+            color: #5bb37d;\
+        \}\
+        .loader \{\
+            border: 4px solid #f3f3f3;\
+            border-top: 4px solid #5d2595;\
+            border-radius: 50%;\
+            width: 30px;\
+            height: 30px;\
+            animation: spin 1s linear infinite;\
+        \}\
+        @keyframes spin \{\
+            0% \{ transform: rotate(0deg); \}\
+            100% \{ transform: rotate(360deg); \}\
+        \}\
+        #analyzeButton, #detailsButton, .link-button \{\
+            background-color: #5bb37d;\
+            color: white;\
+            transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out;\
+            text-decoration: none;\
+            display: inline-block;\
+            padding: 8px 16px;\
+            border-radius: 8px;\
+            font-weight: bold;\
+        \}\
+        #analyzeButton:hover, #detailsButton:hover, .link-button:hover \{\
+            background-color: #4b8f67;\
+            transform: scale(1.05);\
+        \}\
+        .language-toggle \{\
+            position: absolute;\
+            top: 1rem;\
+            right: 1rem;\
+            cursor: pointer;\
+            z-index: 100;\
+        \}\
+        .language-toggle img \{\
+            width: 40px;\
+            height: 40px;\
+            border-radius: 50%;\
+            border: 2px solid #fff;\
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);\
+        \}\
+    </style>\
+</head>\
+<body class="flex items-center justify-center min-h-screen p-4">\
+    <div class="language-toggle">\
+        <img id="langToggle" src="https://flagcdn.com/gb.svg" alt="Switch to English">\
+    </div>\
+    <div class="container bg-white p-8 rounded-xl shadow-lg border border-gray-200">\
+        <header class="text-center mb-6">\
+            <h1 id="mainHeading" class="text-4xl font-bold text-budbee-purple mb-2">Logistiikan Kannattavuusanalyysi</h1>\
+            <p id="subHeading" class="text-lg text-gray-600">Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.</p>\
+        </header>\
+\
+        <!-- Input Section -->\
+        <div class="mb-6 space-y-4">\
+            <div>\
+                <label for="destinationInput" id="destinationLabel" class="block text-gray-700 font-semibold mb-2">Sy\'f6t\'e4 kohdekaupunki:</label>\
+                <input type="text" id="destinationInput" placeholder="Esim. Kokkola" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">\
+            </div>\
+            <div>\
+                <label for="ppldInput" id="ppldLabel" class="block text-gray-700 font-semibold mb-2">PPLD:</label>\
+                <input type="number" id="ppldInput" value="10" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">\
+            </div>\
+            <div>\
+                <label for="variableCostInput" id="variableCostLabel" class="block text-gray-700 font-semibold mb-2">Muuttuva kulu per paketti (\'80):</label>\
+                <input type="number" id="variableCostInput" value="1.93" step="0.01" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">\
+            </div>\
+            <button id="analyzeButton" class="w-full font-bold py-3 px-4 rounded-lg">\
+                Analysoi\
+            </button>\
+        </div>\
+\
+        <!-- Result Section -->\
+        <div id="results" class="bg-gray-100 p-6 rounded-lg border border-gray-200" style="display: none;">\
+            <div id="loading" class="flex justify-center items-center py-8" style="display: none;">\
+                <div class="loader"></div>\
+            </div>\
+            <div id="resultContent" class="space-y-4" style="display: none;">\
+                <h2 id="resultsHeading" class="text-2xl font-bold text-budbee-purple">Analyysin tulokset</h2>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="closestTerminalLabel" class="text-sm text-gray-500">L\'e4hin terminaali:</p>\
+                    <p id="closestTerminal" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                \
+                <!-- Manual Route Data Input -->\
+                <div class="bg-white p-4 rounded-lg shadow-sm space-y-2">\
+                    <h3 id="manualHeading" class="font-semibold text-gray-700">Muokkaa reitin tietoja:</h3>\
+                    <div>\
+                        <label for="manualDistanceInput" id="manualDistanceLabel" class="block text-sm text-gray-500 mb-1">Matka (km) yhteens\'e4:</label>\
+                        <input type="number" id="manualDistanceInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">\
+                    </div>\
+                    <div>\
+                        <label for="manualHoursInput" id="manualHoursLabel" class="block text-sm text-gray-500 mb-1">Aika (tuntia) yhteens\'e4:</label>\
+                        <input type="number" id="manualHoursInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">\
+                    </div>\
+                    <div>\
+                        <label for="manualMinutesInput" id="manualMinutesLabel" class="block text-sm text-gray-500 mb-1">Aika (minuuttia) yhteens\'e4:</label>\
+                        <input type="number" id="manualMinutesInput" step="1" class="w-full px-4 py-2 border border-gray-300 rounded-lg">\
+                    </div>\
+                </div>\
+\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="routeDistanceLabel" class="text-sm text-gray-500">Matka:</p>\
+                    <p id="routeDistance" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="routeTimeLabel" class="text-sm text-gray-500">Matkaan kuluva aika:</p>\
+                    <p id="routeTime" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="totalStopDurationLabel" class="text-sm text-gray-500">Pys\'e4hdysten kesto:</p>\
+                    <p id="totalStopDuration" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="totalRouteDurationLabel" class="text-sm text-gray-500">Reitin kokonaiskesto:</p>\
+                    <p id="totalRouteDuration" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="fixedCostLabel" class="text-sm text-gray-500">Reitin kiinte\'e4 p\'e4iv\'e4kustannus:</p>\
+                    <p id="fixedCost" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="netProfitPerLockerLabel" class="text-sm text-gray-500">Automaattikohtainen nettotuotto p\'e4iv\'e4ss\'e4:</p>\
+                    <p id="netProfitPerLocker" class="text-lg font-semibold text-budbee-green"></p>\
+                </div>\
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <p id="breakEvenPointLabel" class="text-sm text-gray-500">Kannattavuuspiste:</p>\
+                    <p id="breakEvenPoint" class="text-2xl font-bold text-budbee-purple"></p>\
+                    <p id="breakEvenDetails" class="text-sm text-gray-500"></p>\
+                </div>\
+                \
+                <div class="bg-white p-4 rounded-lg shadow-sm">\
+                    <label for="manualLockerCountInput" id="manualLockerCountLabel" class="block text-gray-700 font-semibold mb-2">Muokkaa automaattim\'e4\'e4r\'e4\'e4 (paina uudelleen 'Tarkka erittely'):</label>\
+                    <input type="number" id="manualLockerCountInput" step="1" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-budbee-green transition">\
+                </div>\
+                \
+                <button id="detailsButton" class="w-full mt-4 font-bold py-3 px-4 rounded-lg">\
+                    Tarkka erittely\
+                </button>\
+                <a id="mapsLink" href="#" target="_blank" class="w-full mt-4 link-button text-center">\
+                    Avaa reitti Google Mapsissa\
+                </a>\
+            </div>\
+            \
+            <div id="detailedBreakdown" class="bg-white p-6 mt-4 rounded-lg shadow-inner border border-gray-300" style="display: none;">\
+                <h3 id="detailedHeading" class="text-xl font-bold text-budbee-purple mb-4">Kulujen ja tuottojen tarkka erittely</h3>\
+                <div class="space-y-3">\
+                    <p id="packageCountLabel" class="font-semibold text-lg text-gray-700">Pakettim\'e4\'e4r\'e4:</p>\
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">\
+                        <li id="totalPackagesAtBreakeven"></li>\
+                    </ul>\
+                    <p id="perPackageHeading" class="font-semibold text-lg text-gray-700">Pakettikohtainen erittely:</p>\
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">\
+                        <li id="perPackageIncome"></li>\
+                        <li id="perPackageVariableCost"></li>\
+                        <li id="perPackageLockerRent"></li>\
+                        <li id="perPackageCompensation"></li>\
+                        <li id="perPackageFuelCost"></li>\
+                    </ul>\
+                    <p id="perLockerHeading" class="font-semibold text-lg text-gray-700">Automaattikohtaiset kulut:</p>\
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">\
+                        <li id="dailyVariableCostsBreakdown"></li>\
+                        <li id="dailyLockerRentBreakdown"></li>\
+                        <li id="stopWageCostBreakdown"></li>\
+                    </ul>\
+                    <p id="fixedCostsHeading" class="font-semibold text-lg text-gray-700">Reitin kiinte\'e4t kulut:</p>\
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">\
+                        <li id="fuelCostBreakdown"></li>\
+                        <li id="wageCostBreakdown"></li>\
+                    </ul>\
+                    <p id="netResultHeading" class="font-semibold text-lg text-gray-700">Nettotulos:</p>\
+                    <ul class="list-disc list-inside space-y-1 text-sm text-gray-600">\
+                        <li id="netProfitPerPackageBreakdown"></li>\
+                        <li id="totalDailyNetProfitBreakdown"></li>\
+                    </ul>\
+                </div>\
+            </div>\
+\
+            <div id="error" class="bg-red-100 text-red-700 p-4 rounded-lg border border-red-300" style="display: none;">\
+                <p id="errorMessage"></p>\
+            </div>\
+        </div>\
+\
+        <!-- Custom Modal for Alerts -->\
+        <div id="modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center p-4" style="display: none;">\
+            <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full text-center border-t-4 border-budbee-green">\
+                <h3 id="modalTitle" class="text-lg font-bold text-gray-800 mb-2"></h3>\
+                <p id="modalMessage" class="text-sm text-gray-600 mb-4"></p>\
+                <button id="modalCloseButton" class="bg-budbee-green text-white px-6 py-2 rounded-lg hover:bg-budbee-purple transition">Sulje</button>\
+            </div>\
+        </div>\
+\
+    </div>\
+\
+    <script>\
+        const langData = \{\
+            'fi': \{\
+                appTitle: 'Budbee-reittien kannattavuusanalyysi',\
+                mainHeading: 'Logistiikan Kannattavuusanalyysi',\
+                subHeading: 'Laske, kuinka monta automaattia tarvitaan uuden reitin kannattavuuteen.',\
+                destinationLabel: 'Sy\'f6t\'e4 kohdekaupunki:',\
+                destinationPlaceholder: 'Esim. Kokkola',\
+                ppldLabel: 'PPLD:',\
+                variableCostLabel: 'Muuttuva kulu per paketti (\'80):',\
+                analyzeButton: 'Analysoi',\
+                resultsHeading: 'Analyysin tulokset',\
+                closestTerminalLabel: 'L\'e4hin terminaali:',\
+                manualHeading: 'Muokkaa reitin tietoja:',\
+                manualDistanceLabel: 'Matka (km) yhteens\'e4:',\
+                manualHoursLabel: 'Aika (tuntia) yhteens\'e4:',\
+                manualMinutesLabel: 'Aika (minuuttia) yhteens\'e4:',\
+                routeDistanceLabel: 'Matka:',\
+                routeTimeLabel: 'Matkaan kuluva aika:',\
+                totalStopDurationLabel: 'Pys\'e4hdysten kesto:',\
+                totalRouteDurationLabel: 'Reitin kokonaiskesto:',\
+                fixedCostLabel: 'Reitin kiinte\'e4 p\'e4iv\'e4kustannus:',\
+                netProfitPerLockerLabel: 'Automaattikohtainen nettotuotto p\'e4iv\'e4ss\'e4:',\
+                breakEvenPointLabel: 'Kannattavuuspiste:',\
+                manualLockerCountLabel: "Muokkaa automaattim\'e4\'e4r\'e4\'e4 (paina uudelleen 'Tarkka erittely'):",\
+                detailsButton: 'Tarkka erittely',\
+                mapsLink: 'Avaa reitti Google Mapsissa',\
+                detailedHeading: 'Kulujen ja tuottojen tarkka erittely',\
+                packageCountLabel: 'Pakettim\'e4\'e4r\'e4:',\
+                perPackageHeading: 'Pakettikohtainen erittely:',\
+                perLockerHeading: 'Automaattikohtaiset kulut:',\
+                fixedCostsHeading: 'Reitin kiinte\'e4t kulut:',\
+                netResultHeading: 'Nettotulos:',\
+                perPackageIncome: 'Tulo per paketti:',\
+                perPackageVariableCost: 'Muuttuva kulu per paketti:',\
+                perPackageLockerRent: 'Automaattivuokra per paketti:',\
+                perPackageCompensation: 'Kompensaatio (ajo ja pys\'e4hdys) per paketti:',\
+                perPackageFuelCost: 'Polttoainekustannus per paketti:',\
+                dailyVariableCostsBreakdown: 'Muuttuvat kustannukset (per automaatti):',\
+                dailyLockerRentBreakdown: 'Automaatin p\'e4iv\'e4vuokra:',\
+                stopWageCostBreakdown: 'Kompensaatio (pys\'e4hdys, per automaatti):',\
+                fuelCostBreakdown: 'Polttoainekustannukset:',\
+                wageCostBreakdown: 'Kompensaatio (ajo ja pys\'e4hdys):',\
+                netProfitPerPackageBreakdown: 'P\'e4ivitt\'e4inen nettotulos per paketti:',\
+                totalDailyNetProfitBreakdown: 'P\'e4ivitt\'e4inen kokonaisnettotulos:',\
+                modalErrorTitle: 'Virhe',\
+                modalErrorMessage: 'Sy\'f6t\'e4 kelvollinen automaattim\'e4\'e4r\'e4.',\
+                noRouteFound: (city) => `Paikkakuntaa "$\{city\}" ei l\'f6ydy. Tarkista kirjoitusasu.`,\
+                noProfit: 'Negatiivinen nettotuotto, reitti ei ole kannattava mill\'e4\'e4n automaattim\'e4\'e4r\'e4ll\'e4.',\
+                modalClose: 'Sulje'\
+            \},\
+            'en': \{\
+                appTitle: 'Budbee Route Profitability Analysis',\
+                mainHeading: 'Logistics Profitability Analysis',\
+                subHeading: 'Calculate how many lockers are needed for a new route to be profitable.',\
+                destinationLabel: 'Enter destination city:',\
+                destinationPlaceholder: 'E.g. Kokkola',\
+                ppldLabel: 'PPLD:',\
+                variableCostLabel: 'Variable cost per package (\'80):',\
+                analyzeButton: 'Analyze',\
+                resultsHeading: 'Analysis Results',\
+                closestTerminalLabel: 'Closest terminal:',\
+                manualHeading: 'Edit route data:',\
+                manualDistanceLabel: 'Total distance (km):',\
+                manualHoursLabel: 'Total time (hours):',\
+                manualMinutesLabel: 'Total time (minutes):',\
+                routeDistanceLabel: 'Distance:',\
+                routeTimeLabel: 'Driving time:',\
+                totalStopDurationLabel: 'Stop duration:',\
+                totalRouteDurationLabel: 'Total route duration:',\
+                fixedCostLabel: 'Fixed daily route cost:',\
+                netProfitPerLockerLabel: 'Net profit per locker per day:',\
+                breakEvenPointLabel: 'Breakeven point:',\
+                manualLockerCountLabel: "Edit number of lockers (press 'Detailed breakdown' again):",\
+                detailsButton: 'Detailed breakdown',\
+                mapsLink: 'Open route in Google Maps',\
+                detailedHeading: 'Detailed breakdown of costs and revenue',\
+                packageCountLabel: 'Package count:',\
+                perPackageHeading: 'Per package breakdown:',\
+                perLockerHeading: 'Per locker costs:',\
+                fixedCostsHeading: 'Fixed route costs:',\
+                netResultHeading: 'Net result:',\
+                perPackageIncome: 'Revenue per package:',\
+                perPackageVariableCost: 'Variable cost per package:',\
+                perPackageLockerRent: 'Locker rent per package:',\
+                perPackageCompensation: 'Compensation (driving and stops) per package:',\
+                perPackageFuelCost: 'Fuel cost per package:',\
+                dailyVariableCostsBreakdown: 'Variable costs (per locker):',\
+                dailyLockerRentBreakdown: 'Daily locker rent:',\
+                stopWageCostBreakdown: 'Compensation (stops, per locker):',\
+                fuelCostBreakdown: 'Fuel costs:',\
+                wageCostBreakdown: 'Compensation (driving and stops):',\
+                netProfitPerPackageBreakdown: 'Daily net profit per package:',\
+                totalDailyNetProfitBreakdown: 'Total daily net profit:',\
+                modalErrorTitle: 'Error',\
+                modalErrorMessage: 'Please enter a valid number of lockers.',\
+                noRouteFound: (city) => `Could not find a location for "$\{city\}". Please check spelling.`,\
+                noProfit: 'Negative net profit, the route is not profitable with any number of lockers.',\
+                modalClose: 'Close'\
+            \}\
+        \};\
+\
+        let currentLang = 'fi';\
+        const langToggle = document.getElementById('langToggle');\
+\
+        function updateLanguage(lang) \{\
+            currentLang = lang;\
+            const texts = langData[lang];\
+\
+            document.title = texts.appTitle;\
+            document.getElementById('mainHeading').textContent = texts.mainHeading;\
+            document.getElementById('subHeading').textContent = texts.subHeading;\
+            document.getElementById('destinationLabel').textContent = texts.destinationLabel;\
+            document.getElementById('destinationInput').placeholder = texts.destinationPlaceholder;\
+            document.getElementById('ppldLabel').textContent = texts.ppldLabel;\
+            document.getElementById('variableCostLabel').textContent = texts.variableCostLabel;\
+            document.getElementById('analyzeButton').textContent = texts.analyzeButton;\
+            document.getElementById('resultsHeading').textContent = texts.resultsHeading;\
+            document.getElementById('closestTerminalLabel').textContent = texts.closestTerminalLabel;\
+            document.getElementById('manualHeading').textContent = texts.manualHeading;\
+            document.getElementById('manualDistanceLabel').textContent = texts.manualDistanceLabel;\
+            document.getElementById('manualHoursLabel').textContent = texts.manualHoursLabel;\
+            document.getElementById('manualMinutesLabel').textContent = texts.manualMinutesLabel;\
+            document.getElementById('routeDistanceLabel').textContent = texts.routeDistanceLabel;\
+            document.getElementById('routeTimeLabel').textContent = texts.routeTimeLabel;\
+            document.getElementById('totalStopDurationLabel').textContent = texts.totalStopDurationLabel;\
+            document.getElementById('totalRouteDurationLabel').textContent = texts.totalRouteDurationLabel;\
+            document.getElementById('fixedCostLabel').textContent = texts.fixedCostLabel;\
+            document.getElementById('netProfitPerLockerLabel').textContent = texts.netProfitPerLockerLabel;\
+            document.getElementById('breakEvenPointLabel').textContent = texts.breakEvenPointLabel;\
+            document.getElementById('manualLockerCountLabel').textContent = texts.manualLockerCountLabel;\
+            document.getElementById('detailsButton').textContent = texts.detailsButton;\
+            document.getElementById('mapsLink').textContent = texts.mapsLink;\
+            document.getElementById('detailedHeading').textContent = texts.detailedHeading;\
+            document.getElementById('packageCountLabel').textContent = texts.packageCountLabel;\
+            document.getElementById('perPackageHeading').textContent = texts.perPackageHeading;\
+            document.getElementById('perLockerHeading').textContent = texts.perLockerHeading;\
+            document.getElementById('fixedCostsHeading').textContent = texts.fixedCostsHeading;\
+            document.getElementById('netResultHeading').textContent = texts.netResultHeading;\
+            document.getElementById('perPackageIncome').textContent = texts.perPackageIncome;\
+            document.getElementById('perPackageVariableCost').textContent = texts.perPackageVariableCost;\
+            document.getElementById('perPackageLockerRent').textContent = texts.perPackageLockerRent;\
+            document.getElementById('perPackageCompensation').textContent = texts.perPackageCompensation;\
+            document.getElementById('perPackageFuelCost').textContent = texts.perPackageFuelCost;\
+            document.getElementById('dailyVariableCostsBreakdown').textContent = texts.dailyVariableCostsBreakdown;\
+            document.getElementById('dailyLockerRentBreakdown').textContent = texts.dailyLockerRentBreakdown;\
+            document.getElementById('stopWageCostBreakdown').textContent = texts.stopWageCostBreakdown;\
+            document.getElementById('fuelCostBreakdown').textContent = texts.fuelCostBreakdown;\
+            document.getElementById('wageCostBreakdown').textContent = texts.wageCostBreakdown;\
+            document.getElementById('netProfitPerPackageBreakdown').textContent = texts.netProfitPerPackageBreakdown;\
+            document.getElementById('totalDailyNetProfitBreakdown').textContent = texts.totalDailyNetProfitBreakdown;\
+            document.getElementById('modalTitle').textContent = texts.modalErrorTitle;\
+            document.getElementById('modalMessage').textContent = texts.modalErrorMessage;\
+            document.getElementById('modalCloseButton').textContent = texts.modalClose;\
+\
+            langToggle.src = lang === 'fi' ? 'https://flagcdn.com/gb.svg' : 'https://flagcdn.com/fi.svg';\
+            langToggle.alt = lang === 'fi' ? 'Switch to English' : 'Vaihda suomeksi';\
+        \}\
+\
+        langToggle.addEventListener('click', () => \{\
+            const newLang = currentLang === 'fi' ? 'en' : 'fi';\
+            updateLanguage(newLang);\
+            if (cachedCalculations) \{\
+                updateAllCalculations();\
+            \}\
+        \});\
+\
+        const destinationInput = document.getElementById('destinationInput');\
+        const ppldInput = document.getElementById('ppldInput');\
+        const variableCostInput = document.getElementById('variableCostInput');\
+        const manualLockerCountInput = document.getElementById('manualLockerCountInput');\
+        const manualDistanceInput = document.getElementById('manualDistanceInput');\
+        const manualHoursInput = document.getElementById('manualHoursInput');\
+        const manualMinutesInput = document.getElementById('manualMinutesInput');\
+        const analyzeButton = document.getElementById('analyzeButton');\
+        const detailsButton = document.getElementById('detailsButton');\
+        const detailedBreakdownDiv = document.getElementById('detailedBreakdown');\
+        const mapsLink = document.getElementById('mapsLink');\
+\
+        const resultsDiv = document.getElementById('results');\
+        const loadingDiv = document.getElementById('loading');\
+        const resultContentDiv = document.getElementById('resultContent');\
+        const errorDiv = document.getElementById('error');\
+        const errorMessageSpan = document.getElementById('errorMessage');\
+\
+        const closestTerminalSpan = document.getElementById('closestTerminal');\
+        const routeDistanceSpan = document.getElementById('routeDistance');\
+        const routeTimeSpan = document.getElementById('routeTime');\
+        const totalStopDurationSpan = document.getElementById('totalStopDuration');\
+        const totalRouteDurationSpan = document.getElementById('totalRouteDuration');\
+        const fixedCostSpan = document.getElementById('fixedCost');\
+        const netProfitPerLockerSpan = document.getElementById('netProfitPerLocker');\
+        const breakEvenPointSpan = document.getElementById('breakEvenPoint');\
+        const breakEvenDetailsSpan = document.getElementById('breakEvenDetails');\
+\
+        const modal = document.getElementById('modal');\
+        const modalTitle = document.getElementById('modalTitle');\
+        const modalMessage = document.getElementById('modalMessage');\
+        const modalCloseButton = document.getElementById('modalCloseButton');\
+        \
+        let cachedCalculations = null;\
+        let cachedRouteDuration = null;\
+        let cachedClosestTerminalName = null;\
+        let cachedVehicleType = null;\
+        let cachedRouteDistance = null;\
+        let cachedClosestTerminalAddress = null;\
+        let cachedDestinationName = null;\
+        \
+        function showModal(title, message) \{\
+            modalTitle.textContent = title;\
+            modalMessage.textContent = message;\
+            modal.style.display = 'flex';\
+        \}\
+\
+        modalCloseButton.addEventListener('click', () => \{\
+            modal.style.display = 'none';\
+        \});\
+\
+        const terminals = \{\
+            'Vantaa': \{ lat: 60.290314, lon: 24.96513, address: 'Tammiston Kauppatie 11 B, 01510 Vantaa', vehicle: 'pullis' \},\
+            'Jyv\'e4skyl\'e4': \{ lat: 62.242637, lon: 25.747355, address: 'Kuormaajantie 6 / Suluntie, 40320 Jyv\'e4skyl\'e4', vehicle: 'pakettiauto' \},\
+            'Kuopio': \{ lat: 62.905646, lon: 27.683674, address: 'Kis\'e4llinkatu 5, 70780 Kuopio', vehicle: 'pakettiauto' \},\
+            'Lahti': \{ lat: 60.98595, lon: 25.64253, address: 'Vuoripojankatu 16, 15210 Lahti', vehicle: 'pakettiauto' \},\
+            'Oulu': \{ lat: 65.01168, lon: 25.47167, address: 'Graniittitie 6, 90550 Oulu', vehicle: 'pakettiauto' \},\
+            'Tampere': \{ lat: 61.4981, lon: 23.7606, address: 'Kyt\'f6maankatu 11, Tampere 33720', vehicle: 'pakettiauto' \},\
+            'Turku': \{ lat: 60.4518, lon: 22.2666, address: 'L\'e4nsi-Avantintie 8, 21420 Turku', vehicle: 'pakettiauto' \},\
+            'Joensuu': \{ lat: 62.6006, lon: 29.7634, address: 'Wahlforssinkatu 9 A, 80100 Joensuu', vehicle: 'pakettiauto' \},\
+            'Vaasa': \{ lat: 63.0954, lon: 21.6163, address: 'Konttoritie 12, 65610 Vaasa', vehicle: 'pakettiauto' \},\
+            'Pori': \{ lat: 61.4862, lon: 21.795, address: 'Karjalankatu 11, 28130 Pori', vehicle: 'pakettiauto' \},\
+            'Lappeenranta': \{ lat: 61.0594, lon: 28.1873, address: 'Ratakatu 41, 53100 Lappeenranta', vehicle: 'pakettiauto' \}\
+        \};\
+\
+        const incomePerPackage = 3.57; // \'80\
+        const dailyLockerRent = 5.24; // \'80\
+        const stopDuration = 6.49; // minuuttia\
+\
+        const fuelPrice = 1.85; // \'80/l\
+        const vehicleCosts = \{\
+            'pullis': \{ hourly: 32.33, fuelConsumption: 13 \},\
+            'pakettiauto': \{ hourly: 28.34, fuelConsumption: 8 \}\
+        \};\
+        \
+        const routeData = \{\
+            'Oulu-Tornio': \{ distance: 120, duration: 90 \},\
+            'Oulu-Kemi': \{ distance: 105, duration: 75 \},\
+            'Vaasa-Kokkola': \{ distance: 121, duration: 90 \},\
+            'Vaasa-Sein\'e4joki': \{ distance: 78, duration: 60 \},\
+            'Oulu-Rovaniemi': \{ distance: 220, duration: 165 \},\
+            'Vantaa-H\'e4meenlinna': \{ distance: 98, duration: 75 \},\
+            'Tampere-H\'e4meenlinna': \{ distance: 75, duration: 60 \},\
+            'Kuopio-Rovaniemi': \{ distance: 580, duration: 420 \},\
+            'Turku-Salo': \{ distance: 52, duration: 40 \},\
+            'Vantaa-Salo': \{ distance: 120, duration: 85 \},\
+            'Pori-Rauma': \{ distance: 50, duration: 40 \},\
+            'Turku-Rauma': \{ distance: 90, duration: 65 \},\
+            'Jyv\'e4skyl\'e4-Savonlinna': \{ distance: 190, duration: 150 \},\
+            'Lappeenranta-Savonlinna': \{ distance: 140, duration: 120 \},\
+            'Tampere-Kangasala': \{ distance: 16, duration: 20 \},\
+            'Vantaa-Kerava': \{ distance: 22, duration: 30 \},\
+            'Helsinki-Espoo': \{ distance: 17, duration: 25 \},\
+            'Helsinki-Vantaa': \{ distance: 20, duration: 25 \},\
+            'Oulu-Kempele': \{ distance: 15, duration: 20 \},\
+            'Tampere-Pirkkala': \{ distance: 15, duration: 20 \},\
+            'Turku-Kaarina': \{ distance: 10, duration: 15 \},\
+            'Jyv\'e4skyl\'e4-Muurame': \{ distance: 16, duration: 20 \},\
+            'Lahti-Hollola': \{ distance: 10, duration: 15 \},\
+            'Kuopio-Siilinj\'e4rvi': \{ distance: 25, duration: 25 \},\
+            'Joensuu-Liperi': \{ distance: 20, duration: 25 \},\
+            'Vaasa-Mustasaari': \{ distance: 10, duration: 15 \},\
+            'Pori-Ulvila': \{ distance: 10, duration: 15 \},\
+            'Lappeenranta-Imatra': \{ distance: 35, duration: 35 \},\
+            'Turku-Naantali': \{ distance: 15, duration: 20 \},\
+            'Turku-Raisio': \{ distance: 10, duration: 15 \},\
+            'Tampere-Yl\'f6j\'e4rvi': \{ distance: 15, duration: 20 \},\
+            'Tampere-Nokia': \{ distance: 15, duration: 20 \},\
+            'Jyv\'e4skyl\'e4-Laukaa': \{ distance: 25, duration: 25 \},\
+            'Lahti-Orimattila': \{ distance: 25, duration: 25 \},\
+            'Vantaa-Tuusula': \{ distance: 20, duration: 25 \},\
+            'Kontiolahd': \{ distance: 20, duration: 25 \},\
+            'Ii': \{ distance: 35, duration: 30 \},\
+            'Lemi': \{ distance: 25, duration: 25 \},\
+            'Maalahti': \{ distance: 25, duration: 30 \},\
+            'Harjavalta': \{ distance: 30, duration: 30 \},\
+            'Iisalmi': \{ distance: 85, duration: 70 \},\
+            'Kotka': \{ distance: 120, duration: 90 \},\
+            'Kitee': \{ distance: 60, duration: 50 \},\
+            'Forssa': \{ distance: 55, duration: 45 \},\
+            'Somero': \{ distance: 40, duration: 35 \},\
+            'Ilmajoki': \{ distance: 15, duration: 15 \},\
+            'Mikkeli': \{ distance: 100, duration: 90 \},\
+            'Kankaanp\'e4\'e4': \{ distance: 50, duration: 45 \},\
+            'Suonenjoki': \{ distance: 50, duration: 40 \},\
+            'Sastamala': \{ distance: 50, duration: 40 \},\
+            'Uusikaupunki': \{ distance: 70, duration: 60 \},\
+            'Kristiinankaupunki': \{ distance: 95, duration: 75 \},\
+            'Kemi': \{ distance: 100, duration: 75 \},\
+            'Lieksa': \{ distance: 95, duration: 80 \},\
+            'Kouvola': \{ distance: 60, duration: 50 \},\
+            'Hamina': \{ distance: 90, duration: 70 \},\
+            'Salo': \{ distance: 52, duration: 40 \},\
+            'Rauma': \{ distance: 50, duration: 40 \},\
+            'Valkeakoski': \{ distance: 35, duration: 35 \},\
+            'S\'e4kyl\'e4': \{ distance: 65, duration: 60 \},\
+            'Heinola': \{ distance: 35, duration: 30 \},\
+            'Eura': \{ distance: 40, duration: 35 \},\
+            'J\'e4ms\'e4': \{ distance: 60, duration: 50 \},\
+            'Kuusamo': \{ distance: 215, duration: 165 \},\
+            'Tornio': \{ distance: 120, duration: 90 \},\
+            'Uusikaarlepyy': \{ distance: 75, duration: 60 \},\
+        \};\
+\
+        async function getRouteData(origin, destination) \{\
+            const key = `$\{origin\}-$\{destination\}`;\
+            const reverseKey = `$\{destination\}-$\{origin\}`;\
+            return new Promise(resolve => setTimeout(() => \{\
+                if (routeData[key]) \{\
+                    resolve(\{\
+                        distance: routeData[key].distance,\
+                        duration: routeData[key].duration\
+                    \});\
+                \} else if (routeData[reverseKey]) \{\
+                    resolve(\{\
+                        distance: routeData[reverseKey].distance,\
+                        duration: routeData[reverseKey].duration\
+                    \});\
+                \} else \{\
+                    resolve(null);\
+                \}\
+            \}, 1000));\
+        \}\
+\
+        function haversineDistance(lat1, lon1, lat2, lon2) \{\
+            const R = 6371;\
+            const dLat = (lat2 - lat1) * Math.PI / 180;\
+            const dLon = (lon2 - lon1) * Math.PI / 180;\
+            const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +\
+                      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *\
+                      Math.sin(dLon / 2) * Math.sin(dLon / 2);\
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));\
+            return R * c;\
+        \}\
+\
+        async function getCityCoordinates(cityName) \{\
+            const cityCoordinates = \{\
+                'Helsinki': \{ lat: 60.1695, lon: 24.9354 \}, 'Espoo': \{ lat: 60.2055, lon: 24.6559 \},\
+                'Tampere': \{ lat: 61.4991, lon: 23.7871 \}, 'Vantaa': \{ lat: 60.2931, lon: 25.0401 \},\
+                'Oulu': \{ lat: 65.0123, lon: 25.4682 \}, 'Turku': \{ lat: 60.4518, lon: 22.2666 \},\
+                'Jyv\'e4skyl\'e4': \{ lat: 62.2426, lon: 25.7473 \}, 'Kuopio': \{ lat: 62.8924, lon: 27.6775 \},\
+                'Lahti': \{ lat: 60.9858, lon: 25.6559 \}, 'Pori': \{ lat: 61.4862, lon: 21.7950 \},\
+                'Joensuu': \{ lat: 62.6006, lon: 29.7634 \}, 'Vaasa': \{ lat: 63.0954, lon: 21.6163 \},\
+                'Lappeenranta': \{ lat: 61.0594, lon: 28.1873 \}, 'Kokkola': \{ lat: 63.8385, lon: 23.1309 \},\
+                'Kouvola': \{ lat: 60.8667, lon: 26.7083 \}, 'Rovaniemi': \{ lat: 66.5039, lon: 25.7294 \},\
+                'H\'e4meenlinna': \{ lat: 60.9942, lon: 24.4646 \}, 'Sein\'e4joki': \{ lat: 62.7931, lon: 22.8407 \},\
+                'Mikkeli': \{ lat: 61.6872, lon: 27.7056 \}, 'Salo': \{ lat: 60.3789, lon: 23.1344 \},\
+                'Kotka': \{ lat: 60.4650, lon: 26.9450 \}, 'Porvoo': \{ lat: 60.3958, lon: 25.6657 \},\
+                'Hyvink\'e4\'e4': \{ lat: 60.6300, lon: 24.8569 \}, 'Lohja': \{ lat: 60.2500, lon: 24.0667 \},\
+                'J\'e4rvenp\'e4\'e4': \{ lat: 60.4700, lon: 25.0800 \}, 'Tornio': \{ lat: 65.8454, lon: 24.1457 \},\
+                'Savonlinna': \{ lat: 61.8687, lon: 28.8778 \}, 'Riihim\'e4ki': \{ lat: 60.7410, lon: 24.7735 \},\
+                'Iisalmi': \{ lat: 63.5601, lon: 27.1895 \}, 'Varkaus': \{ lat: 62.3150, lon: 27.8732 \},\
+                'Rauma': \{ lat: 61.1293, lon: 21.5170 \}, 'Sastamala': \{ lat: 61.3414, lon: 22.9099 \},\
+                'Yl\'f6j\'e4rvi': \{ lat: 61.5544, lon: 23.5936 \}, 'Kangasala': \{ lat: 61.4651, lon: 24.0621 \},\
+                'Nokia': \{ lat: 61.4776, lon: 23.4988 \}, 'Pirkkala': \{ lat: 61.4429, lon: 23.6366 \},\
+                'Kaarina': \{ lat: 60.4079, lon: 22.3687 \}, 'Raisio': \{ lat: 60.4801, lon: 21.7042 \},\
+                'Naantali': \{ lat: 60.4674, lon: 22.0298 \}, 'Uusikaupunki': \{ lat: 60.8000, lon: 21.4000 \},\
+                'Forssa': \{ lat: 60.8143, lon: 23.6265 \}, 'Kristiinankaupunki': \{ lat: 62.2709, lon: 21.3789 \},\
+                'Pietarsaari': \{ lat: 63.6766, lon: 22.7040 \}, 'Kokem\'e4ki': \{ lat: 61.2583, lon: 22.3418 \},\
+                'Imatra': \{ lat: 61.1833, lon: 28.7667 \}, 'Nurmij\'e4rvi': \{ lat: 60.4658, lon: 24.7891 \},\
+                'Tuusula': \{ lat: 60.4093, lon: 25.0210 \}, 'Kerava': \{ lat: 60.4026, lon: 25.0931 \},\
+                'Kirkkonummi': \{ lat: 60.1258, lon: 24.4363 \}, 'Vihti': \{ lat: 60.4206, lon: 24.3218 \},\
+                'Sipoo': \{ lat: 60.3700, lon: 25.2600 \}, 'Kuusamo': \{ lat: 65.9667, lon: 29.1833 \},\
+                'Kempele': \{ lat: 64.9084, lon: 25.5034 \}, 'Iitti': \{ lat: 60.8950, lon: 26.3400 \},\
+                'Keminmaa': \{ lat: 65.7950, lon: 24.5422 \}, 'Lemp\'e4\'e4l\'e4': \{ lat: 61.3146, lon: 23.7547 \},\
+                'M\'e4nts\'e4l\'e4': \{ lat: 60.6389, lon: 25.3218 \}, 'Orimattila': \{ lat: 60.7909, lon: 25.7196 \},\
+                'J\'e4ms\'e4': \{ lat: 61.8696, lon: 25.2891 \}, 'Siilinj\'e4rvi': \{ lat: 63.0805, lon: 27.6521 \},\
+                'Liperi': \{ lat: 62.5312, lon: 29.5085 \}, 'Lieksa': \{ lat: 63.3167, lon: 30.0167 \},\
+                'Kite': \{ lat: 62.0911, lon: 30.1408 \}, 'Hamina': \{ lat: 60.5700, lon: 27.1100 \},\
+                'Karkkila': \{ lat: 60.5361, lon: 24.2185 \}, 'Orivesi': \{ lat: 61.6700, lon: 24.3600 \},\
+                'Harjavalta': \{ lat: 61.3094, lon: 22.1481 \}, 'Ulvila': \{ lat: 61.4398, lon: 21.8906 \},\
+                'Laukaa': \{ lat: 62.4045, lon: 25.9615 \}, 'Muurame': \{ lat: 62.1332, lon: 25.7402 \},\
+                'Lemp\'e4\'e4l\'e4': \{ lat: 61.3146, lon: 23.7547 \}, 'Keuruu': \{ lat: 62.2612, lon: 24.7214 \},\
+                'S\'e4kyl\'e4': \{ lat: 60.8996, lon: 22.3421 \}, 'Eura': \{ lat: 61.1345, lon: 22.3212 \},\
+                'Kankaanp\'e4\'e4': \{ lat: 61.7850, lon: 22.4000 \}, 'Ilmajoki': \{ lat: 62.7291, lon: 22.5694 \},\
+                'Mustasaari': \{ lat: 63.1026, lon: 21.6841 \}, 'Maalahti': \{ lat: 62.9691, lon: 21.5794 \},\
+                'Kemi': \{ lat: 65.7728, lon: 24.5661 \}, 'Ii': \{ lat: 65.3400, lon: 25.3700 \},\
+                'Pyh\'e4joki': \{ lat: 64.4600, lon: 24.2500 \}, 'Kalajoki': \{ lat: 64.2500, lon: 23.9500 \},\
+                'Kannus': \{ lat: 63.9000, lon: 23.9000 \}, 'Suonenjoki': \{ lat: 62.6247, lon: 27.1894 \},\
+                'Kangasniemi': \{ lat: 61.9800, lon: 26.6300 \}, 'M\'e4ntyharju': \{ lat: 61.1700, lon: 26.8300 \},\
+                'Heinola': \{ lat: 61.2000, lon: 26.0500 \}, 'Nivala': \{ lat: 63.9200, lon: 24.9600 \},\
+                'Haapaj\'e4rvi': \{ lat: 63.7500, lon: 25.3300 \}, 'Pieks\'e4m\'e4ki': \{ lat: 62.3000, lon: 27.5100 \},\
+                'Keuruu': \{ lat: 62.2612, lon: 24.7214 \}, 'Viitasaari': \{ lat: 63.0700, lon: 25.8600 \},\
+                'Kajaani': \{ lat: 64.2250, lon: 27.7300 \}, 'Kuusankoski': \{ lat: 60.9000, lon: 26.2500 \},\
+                'N\'e4rpi\'f6': \{ lat: 62.4700, lon: 21.8000 \}, 'Sodankyl\'e4': \{ lat: 67.4100, lon: 26.6000 \}\
+                \};\
+                return new Promise(resolve => setTimeout(() => \{\
+                    const normalizedCityName = cityName.charAt(0).toUpperCase() + cityName.slice(1).toLowerCase();\
+                    if (cityCoordinates[normalizedCityName]) \{\
+                        resolve(cityCoordinates[normalizedCityName]);\
+                    \} else \{\
+                        resolve(null);\
+                    \}\
+                \}, 500));\
+            \}\
+\
+            // Function to update all displayed values based on the current state\
+            function updateAllCalculations() \{\
+                if (!cachedCalculations) return;\
+                \
+                let totalDurationMinutes = cachedRouteDuration;\
+                let totalDistance = cachedRouteDistance;\
+                \
+                const manualDistance = parseFloat(manualDistanceInput.value);\
+                const manualHours = parseFloat(manualHoursInput.value);\
+                const manualMinutes = parseFloat(manualMinutesInput.value);\
+\
+                if (!isNaN(manualDistance) && manualDistance >= 0) \{\
+                    totalDistance = manualDistance;\
+                \}\
+                \
+                if (!isNaN(manualHours) && manualHours >= 0 && !isNaN(manualMinutes) && manualMinutes >= 0) \{\
+                    totalDurationMinutes = (manualHours * 60) + manualMinutes;\
+                \} else if (!isNaN(manualHours) && manualHours >= 0) \{\
+                    totalDurationMinutes = manualHours * 60;\
+                \} else if (!isNaN(manualMinutes) && manualMinutes >= 0) \{\
+                    totalDurationMinutes = manualMinutes;\
+                \}\
+                \
+                const totalDurationHours = totalDurationMinutes / 60;\
+                \
+                const vehicle = vehicleCosts[cachedVehicleType];\
+                const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;\
+                const wageCost = totalDurationHours * vehicle.hourly;\
+                const newFixedDailyCost = fuelCost + wageCost;\
+                \
+                const netProfitPerLocker = cachedCalculations.netProfitPerLocker;\
+                const breakEvenPoint = newFixedDailyCost / netProfitPerLocker;\
+                const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);\
+\
+                const lockerCount = manualLockerCountInput.value ? parseFloat(manualLockerCountInput.value) : roundedBreakEvenPoint;\
+\
+                const totalStopDurationMinutes = stopDuration * lockerCount;\
+                const totalRouteDurationMinutes = totalDurationMinutes + totalStopDurationMinutes;\
+\
+                // Format time as "X tuntia Y minuuttia"\
+                const formatTime = (totalMinutes) => \{\
+                    const hours = Math.floor(totalMinutes / 60);\
+                    const minutes = Math.round(totalMinutes % 60);\
+                    const lang = currentLang;\
+                    if (lang === 'fi') \{\
+                        return `$\{hours\} tuntia $\{minutes\} minuuttia`;\
+                    \} else \{\
+                        return `$\{hours\} hours $\{minutes\} minutes`;\
+                    \}\
+                \};\
+\
+                // Update main analysis results\
+                closestTerminalSpan.textContent = cachedClosestTerminalName;\
+                routeDistanceSpan.textContent = `$\{totalDistance.toFixed(0)\} km`;\
+                routeTimeSpan.textContent = formatTime(totalDurationMinutes);\
+                totalStopDurationSpan.textContent = formatTime(totalStopDurationMinutes);\
+                totalRouteDurationSpan.textContent = formatTime(totalRouteDurationMinutes);\
+                fixedCostSpan.textContent = `$\{newFixedDailyCost.toFixed(2)\} \'80`;\
+                netProfitPerLockerSpan.textContent = `$\{netProfitPerLocker.toFixed(2)\} \'80 / p\'e4iv\'e4`;\
+                breakEvenPointSpan.textContent = `$\{roundedBreakEvenPoint\} $\{currentLang === 'fi' ? 'automaattia' : 'lockers'\}`;\
+                breakEvenDetailsSpan.textContent = `($\{currentLang === 'fi' ? 'Tarkka luku oli' : 'Exact number was'\} $\{breakEvenPoint.toFixed(2)\})`;\
+\
+                // Update detailed breakdown if it's visible\
+                if (detailedBreakdownDiv.style.display !== 'none') \{\
+                    updateBreakdown();\
+                \}\
+            \}\
+\
+            // P\'e4ivit\'e4 erittely manuaalisen kent\'e4n perusteella\
+            function updateBreakdown() \{\
+                if (!cachedCalculations) \{\
+                    detailedBreakdownDiv.style.display = 'none';\
+                    return;\
+                \}\
+\
+                const manualLockerCount = parseFloat(manualLockerCountInput.value);\
+                if (isNaN(manualLockerCount) || manualLockerCount <= 0) \{\
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);\
+                    detailedBreakdownDiv.style.display = 'none';\
+                    return;\
+                \}\
+                \
+                const packagesPerLocker = parseFloat(ppldInput.value);\
+                const variableCostPerPackage = parseFloat(variableCostInput.value);\
+\
+                let routeDistance = parseFloat(manualDistanceInput.value);\
+                let routeDurationMinutes = (parseFloat(manualHoursInput.value) * 60) + parseFloat(manualMinutesInput.value);\
+                \
+                const vehicle = vehicleCosts[cachedVehicleType];\
+                const fuelCost = (routeDistance / 100) * vehicle.fuelConsumption * fuelPrice;\
+                const wageCost = (routeDurationMinutes / 60) * vehicle.hourly;\
+                const fixedDailyCost = fuelCost + wageCost;\
+                \
+                const totalPackagesAtManualCount = manualLockerCount * packagesPerLocker;\
+                \
+                const pluralPackages = totalPackagesAtManualCount === 1 ? (currentLang === 'fi' ? 'paketti' : 'package') : (currentLang === 'fi' ? 'pakettia' : 'packages');\
+                document.getElementById('totalPackagesAtBreakeven').textContent = `$\{langData[currentLang].packageCountLabel.replace(':', '')\}: $\{totalPackagesAtManualCount.toFixed(0)\} $\{pluralPackages\} / $\{currentLang === 'fi' ? 'p\'e4iv\'e4' : 'day'\}`;\
+\
+                // Pakettikohtainen erittely\
+                const hourlyRate = vehicle.hourly / 60;\
+                const totalStopWageCost = stopDuration * hourlyRate * manualLockerCount;\
+                \
+                const compensationPerPackage = totalPackagesAtManualCount > 0 ? ((wageCost + totalStopWageCost) / totalPackagesAtManualCount) : 0;\
+                const dailyLockerRentPerPackage = totalPackagesAtManualCount > 0 ? (dailyLockerRent * manualLockerCount / totalPackagesAtManualCount) : 0;\
+                const fuelPerPackage = totalPackagesAtManualCount > 0 ? (fuelCost / totalPackagesAtManualCount) : 0;\
+                \
+                const netProfitPerPackage = incomePerPackage - variableCostPerPackage - dailyLockerRentPerPackage - compensationPerPackage - fuelPerPackage;\
+                \
+                // Recalculate net profit per locker based on the new variable cost\
+                const dailyIncome = packagesPerLocker * incomePerPackage;\
+                const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;\
+                const stopWageCostPerLocker = stopDuration * hourlyRate;\
+                const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCostPerLocker;\
+\
+                document.getElementById('perPackageIncome').textContent = `$\{langData[currentLang].perPackageIncome\} $\{incomePerPackage.toFixed(2)\} \'80`;\
+                document.getElementById('perPackageVariableCost').textContent = `$\{langData[currentLang].perPackageVariableCost\} $\{variableCostPerPackage.toFixed(2)\} \'80`;\
+                document.getElementById('perPackageLockerRent').textContent = `$\{langData[currentLang].perPackageLockerRent\} $\{dailyLockerRentPerPackage.toFixed(2)\} \'80`;\
+                document.getElementById('perPackageCompensation').textContent = `$\{langData[currentLang].perPackageCompensation\} $\{compensationPerPackage.toFixed(2)\} \'80`;\
+                document.getElementById('perPackageFuelCost').textContent = `$\{langData[currentLang].perPackageFuelCost\} $\{fuelPerPackage.toFixed(2)\} \'80`;\
+\
+                // Automaattikohtaiset kulut\
+                document.getElementById('dailyVariableCostsBreakdown').textContent = `$\{langData[currentLang].dailyVariableCostsBreakdown\} $\{dailyVariableCosts.toFixed(2)\} \'80`;\
+                document.getElementById('dailyLockerRentBreakdown').textContent = `$\{langData[currentLang].dailyLockerRentBreakdown\} $\{dailyLockerRent.toFixed(2)\} \'80`;\
+                document.getElementById('stopWageCostBreakdown').textContent = `$\{langData[currentLang].stopWageCostBreakdown\} $\{stopWageCostPerLocker.toFixed(2)\} \'80`;\
+                \
+                // Reitin kiinte\'e4t kulut\
+                document.getElementById('fuelCostBreakdown').textContent = `$\{langData[currentLang].fuelCostBreakdown\} $\{fuelCost.toFixed(2)\} \'80`;\
+                document.getElementById('wageCostBreakdown').textContent = `$\{langData[currentLang].wageCostBreakdown\} $\{(wageCost).toFixed(2)\} \'80`;\
+\
+                // Nettotulos\
+                const totalDailyNetProfit = (netProfitPerLocker * manualLockerCount) - fixedDailyCost;\
+                \
+                document.getElementById('netProfitPerPackageBreakdown').textContent = `$\{langData[currentLang].netProfitPerPackageBreakdown\} $\{netProfitPerPackage.toFixed(2)\} \'80`;\
+                document.getElementById('totalDailyNetProfitBreakdown').textContent = `$\{langData[currentLang].totalDailyNetProfitBreakdown\} $\{totalDailyNetProfit.toFixed(2)\} \'80`;\
+\
+                detailedBreakdownDiv.style.display = 'block';\
+            \}\
+        \
+            manualLockerCountInput.addEventListener('input', updateAllCalculations);\
+            manualDistanceInput.addEventListener('input', updateAllCalculations);\
+            manualHoursInput.addEventListener('input', updateAllCalculations);\
+            manualMinutesInput.addEventListener('input', updateAllCalculations);\
+            detailsButton.addEventListener('click', updateBreakdown);\
+        \
+            analyzeButton.addEventListener('click', async () => \{\
+                const destinationName = destinationInput.value.trim();\
+                const packagesPerLocker = parseFloat(ppldInput.value);\
+                const variableCostPerPackage = parseFloat(variableCostInput.value);\
+\
+                if (!destinationName) \{\
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].noRouteFound(destinationName));\
+                    return;\
+                \}\
+                if (isNaN(packagesPerLocker) || packagesPerLocker <= 0) \{\
+                    showModal(langData[currentLang].modalErrorTitle, langData[currentLang].modalErrorMessage);\
+                    return;\
+                \}\
+\
+                resultsDiv.style.display = 'block';\
+                loadingDiv.style.display = 'flex';\
+                resultContentDiv.style.display = 'none';\
+                errorDiv.style.display = 'none';\
+                detailedBreakdownDiv.style.display = 'none';\
+\
+                try \{\
+                    const destinationCoords = await getCityCoordinates(destinationName);\
+                    if (!destinationCoords) \{\
+                        throw new Error(langData[currentLang].noRouteFound(destinationName));\
+                    \}\
+\
+                    let closestTerminalName = null;\
+                    let shortestDistance = Infinity;\
+\
+                    for (const terminalName in terminals) \{\
+                        const dist = haversineDistance(\
+                            terminals[terminalName].lat,\
+                            terminals[terminalName].lon,\
+                            destinationCoords.lat,\
+                            destinationCoords.lon\
+                        );\
+                        if (dist < shortestDistance) \{\
+                            shortestDistance = dist;\
+                            closestTerminalName = terminalName;\
+                        \}\
+                    \}\
+\
+                    const routeDataResult = await getRouteData(closestTerminalName, destinationName);\
+                    const routeDistance = routeDataResult ? routeDataResult.distance : shortestDistance;\
+                    const routeDuration = routeDataResult ? routeDataResult.duration : (shortestDistance / 80) * 60;\
+                    \
+                    const vehicleType = terminals[closestTerminalName].vehicle;\
+                    const vehicle = vehicleCosts[vehicleType];\
+\
+                    const totalDistance = routeDistance * 2;\
+                    const totalDurationMinutes = routeDuration * 2;\
+                    const totalDurationHours = totalDurationMinutes / 60;\
+                    \
+                    const fuelCost = (totalDistance / 100) * vehicle.fuelConsumption * fuelPrice;\
+                    const wageCost = totalDurationHours * vehicle.hourly;\
+                    \
+                    const hourlyRate = vehicle.hourly / 60;\
+                    const dailyIncome = packagesPerLocker * incomePerPackage;\
+                    const dailyVariableCosts = packagesPerLocker * variableCostPerPackage;\
+                    const stopWageCost = stopDuration * hourlyRate;\
+                    const netProfitPerLocker = dailyIncome - dailyVariableCosts - dailyLockerRent - stopWageCost;\
+                    const fixedDailyCost = fuelCost + wageCost;\
+\
+                    if (netProfitPerLocker <= 0) \{\
+                        throw new Error(langData[currentLang].noProfit);\
+                    \}\
+\
+                    const breakEvenPoint = fixedDailyCost / netProfitPerLocker;\
+                    const roundedBreakEvenPoint = Math.ceil(breakEvenPoint);\
+\
+                    manualLockerCountInput.value = roundedBreakEvenPoint;\
+                    manualDistanceInput.value = totalDistance.toFixed(0);\
+                    manualHoursInput.value = Math.floor(totalDurationMinutes / 60);\
+                    manualMinutesInput.value = Math.round(totalDurationMinutes % 60);\
+\
+                    cachedCalculations = \{\
+                        fixedDailyCost: fixedDailyCost,\
+                        fuelCost: fuelCost,\
+                        wageCost: wageCost,\
+                        dailyVariableCosts: dailyVariableCosts,\
+                        dailyLockerRent: dailyLockerRent,\
+                        stopWageCost: stopWageCost,\
+                        netProfitPerLocker: netProfitPerLocker,\
+                        packagesPerLocker: packagesPerLocker,\
+                        hourlyRate: hourlyRate\
+                    \};\
+                    cachedRouteDuration = totalDurationMinutes;\
+                    cachedClosestTerminalName = closestTerminalName;\
+                    cachedVehicleType = vehicleType;\
+                    cachedClosestTerminalAddress = terminals[closestTerminalName].address;\
+                    cachedDestinationName = destinationName;\
+                    cachedRouteDistance = totalDistance;\
+                    \
+                    const mapsUrl = `https://www.google.com/maps/dir/$\{encodeURIComponent(cachedClosestTerminalAddress)\}/$\{encodeURIComponent(cachedDestinationName)\}/$\{encodeURIComponent(cachedClosestTerminalAddress)\}`;\
+                    mapsLink.href = mapsUrl;\
+\
+                    updateAllCalculations();\
+                    \
+                    loadingDiv.style.display = 'none';\
+                    resultContentDiv.style.display = 'block';\
+\
+                \} catch (error) \{\
+                    loadingDiv.style.display = 'none';\
+                    errorDiv.style.display = 'block';\
+                    errorMessageSpan.textContent = error.message;\
+                \}\
+            \});\
+\
+            destinationInput.addEventListener('keydown', (event) => \{\
+                if (event.key === 'Enter') \{\
+                    analyzeButton.click();\
+                \}\
+            \});\
+\
+            document.addEventListener('DOMContentLoaded', () => \{\
+                // Initial update on page load\
+                updateLanguage('fi');\
+                updateAllCalculations();\
+            \});\
+    </script>\
+</body>\
+</html>\
+}
